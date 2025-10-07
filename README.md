@@ -8,12 +8,12 @@ This is a production-ready TypeScript Express boilerplate with security, validat
 - Express web server with TypeScript
 - Security middleware: Helmet, CORS, HPP, rate limiting, XSS protection
 - Validation with Zod
-- Centralized logging with Winston
+- Centralized logging with Winston and Morgan
 - Environment variable management with dotenv
 - Optional process management with PM2
 - Pre-configured linting and formatting (ESLint + Prettier)
 - Git hooks and pre-commit automation (Husky + lint-staged)
-- Custom utilities for async route error handling and input sanitization
+- Custom utilities for async route error handling and input sanitization, base Error class ect.
 
 ## Dependencies
 
@@ -48,6 +48,21 @@ This is a production-ready TypeScript Express boilerplate with security, validat
 | **Custom Utils** | `catchAsync` (`/src/utils/catchAsync.ts`) | Wrapper to handle async route errors without try/catch |
 |  | `xss-clean` (`/src/middlewares/xss-clean`) | Recursive sanitizer for request input |
 |  | `ApiError Class` (`/src/utils/ApiError`) | Custom Error class to |
+
+## Structure
+```
+src/
+├── app.ts              # Express app setup (middleware, routes)
+├── server.ts           # Server entry point (starts HTTP server)
+├── config/             # Environment vars, external service configs
+├── controllers/        # Route handlers (business logic coordination)
+├── middleware/         # Custom middleware (auth, validation, etc.)
+├── models/             # Database models/schemas
+├── routes/             # Route definitions
+├── services/           # Business logic (database ops, external APIs)
+├── utils/              # Helper functions (logger, ApiError, etc.)
+└── validations/        # Request validation schemas
+```
 
 ## Scripts
 
