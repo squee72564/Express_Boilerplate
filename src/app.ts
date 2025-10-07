@@ -1,7 +1,6 @@
 import express, { type Express, type NextFunction, type Response, type Request } from "express";
 import { type HttpError } from "http-errors";
 import logger from "./utils/logger.js";
-import env from "./config/index.js";
 
 import helmet from "helmet";
 import cors from "cors";
@@ -42,10 +41,6 @@ app.use((error: HttpError, _req: Request, _res: Response, next: NextFunction) =>
   });
 
   next(error);
-});
-
-app.listen(env.PORT, () => {
-  logger.log({ level: "info", message: "Listening on port 3000" });
 });
 
 export default app;

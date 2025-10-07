@@ -9,7 +9,7 @@
     "pretty": "npx prettier ./src --write",
     "lint": "npx eslint ./src --fix",
     "start": "NODE_ENV=production node dist/server.js",
-    "start:dev": "NODE_ENV=development nodemon --watch src --ext ts --exec tsx src/app.ts",
+    "start:dev": "NODE_ENV=development nodemon --watch src --ext ts --exec tsx src/server.ts",
     "start:pm2": "NODE_ENV=production pm2 start dist/server.js --name express-backend",
     "restart:pm2": "NODE_ENV=production pm2 restart express-backend",
     "prepare": "husky install"
