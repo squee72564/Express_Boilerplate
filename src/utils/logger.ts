@@ -1,5 +1,5 @@
 import { createLogger, format, transports } from "winston";
-import env from "../config/index.ts";
+import env from "../config/index.js";
 
 const logger = createLogger({
   level: "info",
