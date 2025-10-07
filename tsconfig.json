@@ -17,10 +17,7 @@
     "lib": ["esnext"],
     "types": ["node"],
 
-    // Other Outputs
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    "esModuleInterop": true,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
@@ -36,12 +33,16 @@
 
     // Recommended Options
     "strict": true,
+    "allowImportingTsExtensions": true,
+    //"allowArbitraryExtensions": true,
+    "noEmit": true,
+    "verbatimModuleSyntax": false,
     "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true
+
   },
   "exclude": ["node_modules", "dist", "*.config.*"],
   "include": ["src/**/*"]

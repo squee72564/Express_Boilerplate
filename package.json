@@ -5,11 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && tsc -p ./tsconfig.build.json",
     "pretty": "npx prettier ./src --write",
     "lint": "npx eslint ./src --fix",
     "start": "node dist/server.js",
-    "start:dev": "nodemon --watch src --exec ts-node-esm --transpile-only src/server.ts",
+    "start:dev": "nodemon --watch src --ext ts --exec tsx src/app.ts",
     "start:pm2": "pm2 start dist/server.js --name express-backend",
     "restart:pm2": "pm2 restart express-backend",
     "prepare": "husky install"
@@ -55,9 +55,9 @@
     "nodemon": "^3.1.10",
     "prettier": "3.6.2",
     "rimraf": "^6.0.1",
-    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.0"
   }
