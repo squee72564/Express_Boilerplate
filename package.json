@@ -9,6 +9,7 @@
     "pretty": "npx prettier ./src --write",
     "lint": "npx eslint ./src --fix",
     "start": "node dist/server.js",
+    "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start:pm2": "pm2 start dist/server.js --name express-backend",
     "restart:pm2": "pm2 restart express-backend"
   },
@@ -42,6 +43,7 @@
     "jiti": "^2.6.1",
     "prettier": "3.6.2",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.0"
