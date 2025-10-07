@@ -2,8 +2,8 @@ import type { Response, Request, NextFunction } from "express";
 
 import httpStatus from "http-status";
 import env from "../config/index.js";
-import logger from "@/config/logger.js";
-import ApiError from "@/utils/ApiError.js";
+import logger from "../config/logger.js";
+import ApiError from "../utils/ApiError.js";
 
 export const errorConverter = (
   err: Error & { statusCode?: number },
