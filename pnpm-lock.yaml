@@ -26,6 +26,9 @@ importers:
       hpp:
         specifier: ^0.2.3
         version: 0.2.3
+      http-errors:
+        specifier: ^2.0.0
+        version: 2.0.0
       pm2:
         specifier: ^6.0.13
         version: 6.0.13
