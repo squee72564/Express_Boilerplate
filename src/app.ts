@@ -1,6 +1,6 @@
 import express, { type Express, type NextFunction, type Response, type Request } from "express";
 import { type HttpError } from "http-errors";
-import logger from "./utils/logger.js";
+import logger from "./config/logger.js";
 
 import helmet from "helmet";
 import cors from "cors";

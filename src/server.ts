@@ -1,6 +1,6 @@
 import app from "./app.js";
 import env from "./config/index.js";
-import logger from "./utils/logger.js";
+import logger from "./config/logger.js";
 
 // Maybe handle db connection here?
 
