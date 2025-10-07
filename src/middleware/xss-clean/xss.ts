@@ -1,13 +1,12 @@
-import { inHTMLData } from 'xss-filters'
+import { inHTMLData } from "xss-filters";
 
-// @ts-ignore
-type PlainObject = { [k: string]: any };
+type PlainObject = { [k: string]: unknown };
 
 function isPlainObject(value: unknown): value is PlainObject {
   return (
     value !== null &&
     !Array.isArray(value) &&
-    typeof value === 'object' &&
+    typeof value === "object" &&
     !(value instanceof Date) &&
     !(value instanceof RegExp) &&
     !(value instanceof Buffer)
@@ -20,7 +19,7 @@ export function clean<T>(data: T): T {
   }
 
   if (Array.isArray(data)) {
-    return (data.map((item) => clean(item)) as unknown) as T;
+    return data.map((item) => clean(item)) as unknown as T;
   }
 
   if (isPlainObject(data)) {

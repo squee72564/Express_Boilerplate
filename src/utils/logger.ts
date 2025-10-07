@@ -7,7 +7,7 @@ const logger = createLogger({
     format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
     format.errors({ stack: true }),
     format.splat(),
-    format.json(),
+    format.json()
   ),
   defaultMeta: { service: "express-template" },
   transports: [
@@ -23,7 +23,7 @@ if (env.NODE_ENV !== "production") {
   logger.add(
     new transports.Console({
       format: format.combine(format.colorize(), format.simple()),
-    }),
+    })
   );
 }
 
