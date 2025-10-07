@@ -1,20 +1,25 @@
-import express, { type Express } from "express";
+import express, { type Request, type Response, type NextFunction, type Express } from "express";
 
-import { successHandler, errorHandler } from "./config/morgan.js";
+import httpStatus from "http-status";
 
-import env from "./config/index.ts";
+import morgan from "./config/morgan.js";
+
+import env from "./config/index.js";
 
 import helmet from "helmet";
 import cors from "cors";
-import { rateLimit } from "express-rate-limit";
 import hpp from "hpp";
 import xssSanitize from "./middleware/xss-clean/index.js";
+import rateLimiter from "./middleware/ratelimit.js";
+
+import ApiError from "./utils/ApiError.js";
+import { errorConverter, errorHandler } from "./middleware/errors.js";
 
 const app: Express = express();
 
 if (env.NODE_ENV !== "test") {
-  app.use(successHandler);
-  app.use(errorHandler);
+  app.use(morgan.successHandler);
+  app.use(morgan.errorHandler);
 }
 
 // https://helmetjs.github.io/
@@ -36,16 +41,20 @@ app.use(hpp());
 // https://github.com/expressjs/cors
 // Enable cors
 app.use(cors());
+app.options("*", cors());
 
 // https://express-rate-limit.mintlify.app/overview
-app.use(
-  rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: 100, // 100 req per window
-    standardHeaders: true, // Return rate limit info in headers
-    legacyHeaders: false, // Disable legacy rate limit headers
-    ipv6Subnet: 56,
-  })
-);
+app.use(rateLimiter);
+
+// Send a 404 error for unknown api requests
+app.use((_req: Request, _res: Response, next: NextFunction) => {
+  next(new ApiError(httpStatus.NOT_FOUND, "Not Found"));
+});
+
+// Convert errors to custom ApiError if needed
+app.use(errorConverter);
+
+// Handle Errors
+app.use(errorHandler);
 
 export default app;
