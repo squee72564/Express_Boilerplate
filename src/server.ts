@@ -1,6 +1,6 @@
-import app from "./app.ts";
-import env from "./config/index.ts";
-import logger from "./utils/logger.ts";
+import app from "./app.js";
+import env from "./config/index.js";
+import logger from "./utils/logger.js";
 
 // Maybe handle db connection here?
 
