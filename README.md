@@ -44,7 +44,6 @@ This is a production-ready TypeScript Express boilerplate with security, validat
 |  | `lint-staged` | Run lint/format only on staged files |
 | **Utilities** | `rimraf` | Remove directories/files (used in `build` script) |
 |  | `jiti` | Lightweight ESM/CJS loader |
-| **Type Definitions** | `@types/express`, `@types/node`, `@types/cors`, `@types/hpp`, `@types/xss-filters` | TypeScript type safety for libraries |
 | **Custom Utils** | `catchAsync` (`/src/utils/catchAsync.ts`) | Wrapper to handle async route errors without try/catch |
 |  | `xss-clean` (`/src/middlewares/xss-clean`) | Recursive sanitizer for request input |
 |  | `ApiError Class` (`/src/utils/ApiError`) | Custom Error class to |
