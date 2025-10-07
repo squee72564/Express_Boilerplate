@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "pretty": "npx prettier ./src --write",
     "lint": "npx eslint ./src --fix",
     "start": "node dist/server.js",
@@ -42,6 +42,7 @@
     "globals": "^16.4.0",
     "jiti": "^2.6.1",
     "prettier": "3.6.2",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
