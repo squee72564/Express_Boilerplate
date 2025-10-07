@@ -41,7 +41,6 @@ app.use(hpp());
 // https://github.com/expressjs/cors
 // Enable cors
 app.use(cors());
-app.options("*", cors());
 
 // https://express-rate-limit.mintlify.app/overview
 app.use(rateLimiter);
