@@ -1,6 +1,8 @@
-import express, { type Express, type NextFunction, type Response, type Request } from "express";
-import { type HttpError } from "http-errors";
-import logger from "./config/logger.js";
+import express, { type Express } from "express";
+
+import { successHandler, errorHandler } from "./config/morgan.js";
+
+import env from "./config/index.ts";
 
 import helmet from "helmet";
 import cors from "cors";
@@ -10,17 +12,29 @@ import xssSanitize from "./middleware/xss-clean/index.js";
 
 const app: Express = express();
 
-app.use(express.json());
-app.use(express.urlencoded());
+if (env.NODE_ENV !== "test") {
+  app.use(successHandler);
+  app.use(errorHandler);
+}
 
 // https://helmetjs.github.io/
+// Secruity HTTP headers
 app.use(helmet());
 
+// Parse json request body
+app.use(express.json());
+
+// Parse urlencoded request body
+app.use(express.urlencoded({ extended: true }));
+
+// Sanitize request data
 app.use(xssSanitize());
 
+// Protect against HTTP Parameter Pollution
 app.use(hpp());
 
 // https://github.com/expressjs/cors
+// Enable cors
 app.use(cors());
 
 // https://express-rate-limit.mintlify.app/overview
@@ -33,14 +47,5 @@ app.use(
     ipv6Subnet: 56,
   })
 );
-
-app.use((error: HttpError, _req: Request, _res: Response, next: NextFunction) => {
-  logger.log({
-    level: "warn",
-    message: `${error.name} (${error.status}: ${error.message}`,
-  });
-
-  next(error);
-});
 
 export default app;
