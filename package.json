@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "pretty": "npx prettier ./src --write",
-    "lint": "npx eslint ./src --fix"
+    "lint": "npx eslint ./src --fix",
+    "start": "node dist/server.js",
+    "start:pm2": "pm2 start dist/server.js --name express-backend",
+    "restart:pm2": "pm2 restart express-backend"
   },
   "keywords": [],
   "author": "",
