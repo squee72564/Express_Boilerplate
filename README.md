@@ -1,3 +1,4 @@
+
 # Express TypeScript Boilerplate
 
 This is a production-ready TypeScript Express boilerplate with security, validation, logging, linting, and development tooling pre-configured.
@@ -23,15 +24,16 @@ This is a production-ready TypeScript Express boilerplate with security, validat
 |  | `cors` | Cross-Origin Resource Sharing |
 |  | `hpp` | HTTP parameter pollution protection |
 |  | `express-rate-limit` | Rate limiting to prevent abuse |
-|  | `xss-filters` | Sanitizes user input (used in `xss-clean` utility) |
+|  | `xss-filters` | Sanitizes user input |
 | **Validation** | `zod` | Schema validation for request data |
 | **Error Handling** | `http-errors` | Standardized HTTP errors |
-| **Logging** | `winston` | Logging library for production |
+| **Logging** | `winston` | General purpose logging library |
+|  | `morgan` | Logging for HTTP |
 | **Environment** | `dotenv` | Load `.env` config variables |
 | **Process Management** | `pm2` | Optional process manager for production |
 | **Dev Tools / TypeScript** | `typescript` | TypeScript compiler |
-|  | `ts-node` | Execute TypeScript directly in dev |
-|  | `ts-node-dev` | Hot-reload dev server |
+|  | `tsx` | Execute TypeScript |
+|  | `nodemon` | Hot-reload dev server |
 |  | `tsconfig-paths` | Support TS path aliases |
 | **Linting / Formatting** | `eslint` | Code linting |
 |  | `@eslint/js` | ESLint JS parser plugin |
@@ -45,17 +47,19 @@ This is a production-ready TypeScript Express boilerplate with security, validat
 | **Type Definitions** | `@types/express`, `@types/node`, `@types/cors`, `@types/hpp`, `@types/xss-filters` | TypeScript type safety for libraries |
 | **Custom Utils** | `catchAsync` (`/src/utils/catchAsync.ts`) | Wrapper to handle async route errors without try/catch |
 |  | `xss-clean` (`/src/middlewares/xss-clean`) | Recursive sanitizer for request input |
+|  | `ApiError Class` (`/src/utils/ApiError`) | Custom Error class to |
 
 ## Scripts
 
 ```json
-"scripts": {
-  "build": "rimraf dist && tsc",
-  "pretty": "npx prettier ./src --write",
-  "lint": "npx eslint ./src --fix",
-  "start": "node dist/server.js",
-  "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-  "start:pm2": "pm2 start dist/server.js --name express-backend",
-  "restart:pm2": "pm2 restart express-backend",
-  "prepare": "husky install"
-}
+  "scripts": {
+    "build": "rimraf dist && tsc -p ./tsconfig.build.json",
+    "pretty": "npx prettier ./src --write",
+    "lint": "npx eslint ./src --fix",
+    "start": "NODE_ENV=production node dist/server.js",
+    "start:dev": "NODE_ENV=development nodemon --watch src --ext ts --exec tsx src/server.ts",
+    "start:pm2": "NODE_ENV=production pm2 start dist/server.js --name express-backend",
+    "restart:pm2": "NODE_ENV=production pm2 restart express-backend",
+    "prepare": "husky install"
+  },
+  ```
