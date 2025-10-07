@@ -9,7 +9,7 @@
     "pretty": "npx prettier ./src --write",
     "lint": "npx eslint ./src --fix",
     "start": "node dist/server.js",
-    "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "start:dev": "nodemon --watch src --exec ts-node-esm --transpile-only src/server.ts",
     "start:pm2": "pm2 start dist/server.js --name express-backend",
     "restart:pm2": "pm2 restart express-backend",
     "prepare": "husky install"
@@ -52,6 +52,7 @@
     "husky": "^8.0.0",
     "jiti": "^2.6.1",
     "lint-staged": "^16.2.3",
+    "nodemon": "^3.1.10",
     "prettier": "3.6.2",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
