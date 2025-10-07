@@ -9,6 +9,7 @@ import env from "./config/index.js";
 import helmet from "helmet";
 import cors from "cors";
 import hpp from "hpp";
+import compression from "compression";
 import xssSanitize from "./middleware/xss-clean/index.js";
 import rateLimiter from "./middleware/ratelimit.js";
 
@@ -37,6 +38,9 @@ app.use(xssSanitize());
 
 // Protect against HTTP Parameter Pollution
 app.use(hpp());
+
+// Gzip compression
+app.use(compression());
 
 // https://github.com/expressjs/cors
 // Enable cors
