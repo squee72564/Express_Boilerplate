@@ -13,6 +13,7 @@ import compression from "compression";
 import xssSanitize from "./middleware/xss-clean/index.js";
 import rateLimiter from "./middleware/ratelimit.js";
 
+import routes from "./routes/v1/index.js";
 import ApiError from "./utils/ApiError.js";
 import { errorConverter, errorHandler } from "./middleware/errors.js";
 
@@ -48,6 +49,9 @@ app.use(cors());
 
 // https://express-rate-limit.mintlify.app/overview
 app.use(rateLimiter);
+
+// api routes
+app.use("/v1", routes);
 
 // Send a 404 error for unknown api requests
 app.use((_req: Request, _res: Response, next: NextFunction) => {
