@@ -1,5 +1,10 @@
 
-# Created by https://www.gitignore.io/api/node,vim,git,macos,linux,sublimetext
+dist/
+
+## ESLint build artifacts
+eslint.config*.mts
+eslint.config*.mjs
+eslint.config*.map
 
 ### Git ###
 *.orig
