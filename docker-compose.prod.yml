@@ -4,6 +4,13 @@ services:
     container_name: express_boilerplate_postgres_prod
     env_file:
       .env
+    environment:
+      DOCKER: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: 3
     ports:
       - "5433:5432"
     volumes:
