@@ -1,14 +1,21 @@
 import { createLogger, format, transports } from "winston";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+const isTest = process.env.NODE_ENV === "test";
+const isDocker = process.env.DOCKER === "true" || false;
+
 const logger = createLogger({
-  level: process.env.NODE_ENV === "development" ? "debug" : "info",
+  level: isDevelopment ? "debug" : "info",
   format: format.combine(
     format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
     format.errors({ stack: true }),
     format.splat(),
     format.json()
   ),
-  defaultMeta: { service: "express-template" },
+  defaultMeta: {
+    service: "express-template",
+    ...(isDocker && { container: process.env.HOSTNAME }),
+  },
   transports: [
     new transports.File({
       filename: "express-template-error.log",
@@ -18,7 +25,23 @@ const logger = createLogger({
   ],
 });
 
-if (process.env.NODE_ENV !== "production") {
+// file transports in development
+if (isDevelopment) {
+  logger.add(
+    new transports.File({
+      filename: "express-template-error.log",
+      level: "error",
+    })
+  );
+  logger.add(
+    new transports.File({
+      filename: "express-template-error-combined.log",
+    })
+  );
+}
+
+if (isDevelopment || isTest) {
+  // Pretty Console for dev
   logger.add(
     new transports.Console({
       format: format.combine(
@@ -36,6 +59,13 @@ if (process.env.NODE_ENV !== "production") {
           return `${timestamp} [${level}]: ${message}${metaStr}${stackStr}`;
         })
       ),
+    })
+  );
+} else {
+  // JSON console for production (captured by PM2 / Docker)
+  logger.add(
+    new transports.Console({
+      format: format.json(),
     })
   );
 }
