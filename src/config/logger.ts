@@ -1,8 +1,7 @@
 import { createLogger, format, transports } from "winston";
-import env from "../config/index.js";
 
 const logger = createLogger({
-  level: env.NODE_ENV === "development" ? "debug" : "info",
+  level: process.env.NODE_ENV === "development" ? "debug" : "info",
   format: format.combine(
     format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
     format.errors({ stack: true }),
@@ -19,10 +18,24 @@ const logger = createLogger({
   ],
 });
 
-if (env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production") {
   logger.add(
     new transports.Console({
-      format: format.combine(format.colorize(), format.simple()),
+      format: format.combine(
+        format.colorize(),
+        format.printf(({ level, message, timestamp, stack, ...meta }) => {
+          const { _service, ...rest } = meta;
+
+          let stackStr = "";
+          if (stack) {
+            stackStr = `\n${stack}`;
+            delete rest.stack;
+          }
+
+          const metaStr = Object.keys(rest).length ? `\n${JSON.stringify(rest, null, 2)}` : "";
+          return `${timestamp} [${level}]: ${message}${metaStr}${stackStr}`;
+        })
+      ),
     })
   );
 }
