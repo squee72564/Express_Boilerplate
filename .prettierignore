@@ -15,3 +15,5 @@ yarn.lock
 # Other
 coverage/
 /build/coverage
+
+*/generated/*

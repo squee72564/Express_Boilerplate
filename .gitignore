@@ -158,4 +158,9 @@ Session.vim
 # auto-generated tag files
 tags
 
-# End of https://www.gitignore.io/api/node,vim,git,macos,linux,sublimetext
+/src/db/generated/prisma-sqlite
+/src/db/generated/prisma-postgres
+
+# Do not commit dev db migrations or database
+/prisma/prisma-sqlite/*.db
+/prisma/prisma-sqlite/migrations
