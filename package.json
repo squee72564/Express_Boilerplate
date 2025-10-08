@@ -33,7 +33,12 @@
       "eslint --fix"
     ]
   },
-  "keywords": ["expressjs", "node", "template", "boilerplate"],
+  "keywords": [
+    "expressjs",
+    "node",
+    "template",
+    "boilerplate"
+  ],
   "author": "Alexander Rodriguez",
   "license": "ISC",
   "packageManager": "pnpm@10.17.1",
@@ -69,7 +74,6 @@
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.4.0",
     "husky": "^8.0.0",
-    "jiti": "^2.6.1",
     "lint-staged": "^16.2.3",
     "nodemon": "^3.1.10",
     "prettier": "3.6.2",
