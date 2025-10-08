@@ -4,6 +4,21 @@ import tseslint, {} from "typescript-eslint";
 import prettier from "eslint-config-prettier";
 import { defineConfig } from "eslint/config";
 export default defineConfig([
+  {
+    ignores: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "src/db/generated/**",
+      "src/db/generated/prisma-postgres/**",
+      "coverage/**",
+      "*.config.js",              // ecosystem.config.js, etc.
+      "**/*.log",                 // Log files
+      ".husky/**",                // Git hooks
+      "pnpm-lock.yaml",
+      "package-lock.json",
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
