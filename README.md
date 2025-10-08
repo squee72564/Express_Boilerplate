@@ -18,8 +18,10 @@ This is a production-ready TypeScript Express boilerplate with security, validat
 ## Dependencies
 
 | Category | Library / Utility | Purpose / Notes |
-|----------|-----------------|----------------|
+|----------|------------------|----------------|
 | **Core** | `express` | Web framework |
+| **ORM / Database** | `prisma` | Type-safe ORM and query builder |
+| **Authentication** | `better-auth` | Lightweight, extensible authentication system |
 | **Security Middleware** | `helmet` | HTTP headers security |
 |  | `cors` | Cross-Origin Resource Sharing |
 |  | `hpp` | HTTP parameter pollution protection |
@@ -28,13 +30,13 @@ This is a production-ready TypeScript Express boilerplate with security, validat
 | **Validation** | `zod` | Schema validation for request data |
 | **Error Handling** | `http-errors` | Standardized HTTP errors |
 | **Logging** | `winston` | General purpose logging library |
-|  | `morgan` | Logging for HTTP |
-| **Environment** | `dotenv` | Load `.env` config variables |
+|  | `morgan` | Logging for HTTP requests |
+| **Environment** | `dotenv` | Load `.env` configuration variables |
 | **Process Management** | `pm2` | Optional process manager for production |
 | **Dev Tools / TypeScript** | `typescript` | TypeScript compiler |
-|  | `tsx` | Execute TypeScript |
+|  | `tsx` | Execute TypeScript directly (ESM-compatible) |
 |  | `nodemon` | Hot-reload dev server |
-|  | `tsconfig-paths` | Support TS path aliases |
+|  | `tsconfig-paths` | Support for TypeScript path aliases |
 | **Linting / Formatting** | `eslint` | Code linting |
 |  | `@eslint/js` | ESLint JS parser plugin |
 |  | `eslint-config-prettier` | Disable ESLint rules that conflict with Prettier |
@@ -45,22 +47,24 @@ This is a production-ready TypeScript Express boilerplate with security, validat
 | **Utilities** | `rimraf` | Remove directories/files (used in `build` script) |
 |  | `jiti` | Lightweight ESM/CJS loader |
 | **Custom Utils** | `catchAsync` (`/src/utils/catchAsync.ts`) | Wrapper to handle async route errors without try/catch |
-|  | `xss-clean` (`/src/middlewares/xss-clean`) | Recursive sanitizer for request input |
-|  | `ApiError Class` (`/src/utils/ApiError`) | Custom Error class to |
+|  | `xss-clean` (`/src/middleware/xss-clean`) | Recursive sanitizer for request input |
+|  | `ApiError` (`/src/utils/ApiError.ts`) | Custom Error class for standardized API errors |
 
 ## Structure
 ```
 src/
-├── app.ts              # Express app setup (middleware, routes)
-├── server.ts           # Server entry point (starts HTTP server)
-├── config/             # Environment vars, external service configs
-├── controllers/        # Route handlers (business logic coordination)
-├── middleware/         # Custom middleware (auth, validation, etc.)
-├── models/             # Database models/schemas
-├── routes/             # Route definitions
-├── services/           # Business logic (database ops, external APIs)
-├── utils/              # Helper functions (logger, ApiError, etc.)
-└── validations/        # Request validation schemas
+├── app.ts              # Express app initialization
+├── server.ts           # Server entry point
+├── config/             # Environment variables, logging, and request logging setup
+├── controllers/        # Route controllers — orchestrate request handling logic
+├── db/                 # Database files (generated prisma client here)
+├── lib/                # Shared libraries
+├── middleware/         # Custom middleware
+├── models/             # Domain models/ORM schema extensions
+├── routes/             # Express route definitions
+├── services/           # Business logic and integrations with external systems
+├── utils/              # General-purpose utils
+└── validations/        # Schema-based request validation
 ```
 
 ## Scripts
@@ -69,11 +73,24 @@ src/
   "scripts": {
     "build": "rimraf dist && tsc -p ./tsconfig.build.json",
     "pretty": "npx prettier ./src --write",
-    "lint": "npx eslint ./src --fix",
+    "pretty:check": "npx prettier ./src --check",
+    "lint": "npx eslint . --fix",
+    "lint:check": "npx eslint .",
     "start": "NODE_ENV=production node dist/server.js",
     "start:dev": "NODE_ENV=development nodemon --watch src --ext ts --exec tsx src/server.ts",
     "start:pm2": "NODE_ENV=production pm2 start dist/server.js --name express-backend",
     "restart:pm2": "NODE_ENV=production pm2 restart express-backend",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "prisma:push": "prisma db push",
+    "docker:dev": "docker compose up -d",
+    "docker:dev:logs": "docker compose logs -f postgres",
+    "docker:dev:down": "docker compose down",
+    "docker:prod": "docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d",
+    "docker:prod:logs": "docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f postgres",
+    "docker:prod:down": "docker compose -f docker-compose.yml -f docker-compose.prod.yml down",
     "prepare": "husky install"
   },
   ```
