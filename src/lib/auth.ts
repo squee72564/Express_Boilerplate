@@ -10,11 +10,24 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  // Example for provider like github
+
+  // https://www.better-auth.com/docs/guides/optimizing-for-performance#database-optimizations
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60, // Cache duration in seconds
+    },
+  },
+
+  // Example for provider like github / google
   //socialProdivers: {
   //  github: {
   //    clientId: env.GITHUB_CLIENT_ID as string,
   //    clientSecret: env.GITHUB_CLIENT_SECRET as string,
-  //  }
+  //  },
+  //  google: {
+  //    clientId: env.GOOGLE_CLIENT_ID as string,
+  //    clientSecret: env.GOOGLE_CLIENT_SECRET as string,
+  //  },
   //}
 });
