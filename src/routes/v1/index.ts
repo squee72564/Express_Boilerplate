@@ -1,13 +1,13 @@
-import express, { type Request, type Response, type NextFunction } from "express";
+import express, { type Router, type Request, type Response, type NextFunction } from "express";
 import healthRoute from "./health.route.js";
-import authRoute from "./auth.route.ts";
+import authRoute from "./auth.route.js";
 
 interface RouteData {
   path: string;
   route: (_req: Request, res: Response, _next: NextFunction) => void;
 }
 
-const router = express.Router();
+const router: Router = express.Router();
 
 const defaultRoutes = [
   {
