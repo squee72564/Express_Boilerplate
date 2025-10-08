@@ -28,6 +28,10 @@ if (env.NODE_ENV !== "test") {
 // Secruity HTTP headers
 app.use(helmet());
 
+// Mount express json middleware after Bearer Auth Handler
+// or only apply to routes that dont interact with better-auth
+app.use("/v1", routes.authRoute);
+
 // Parse json request body
 app.use(express.json());
 
@@ -51,7 +55,7 @@ app.use(cors());
 app.use(rateLimiter);
 
 // api routes
-app.use("/v1", routes);
+app.use("/v1", routes.default);
 
 // Send a 404 error for unknown api requests
 app.use((_req: Request, _res: Response, next: NextFunction) => {
