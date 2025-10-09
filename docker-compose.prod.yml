@@ -1,9 +1,9 @@
 services:
   postgres:
-    image: postgres:18.0-alpine3.22
-    container_name: express_boilerplate_postgres_prod
     env_file:
-      .env
+      - .env.production
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     environment:
       DOCKER: true
     logging:
@@ -11,10 +11,9 @@ services:
       options:
         max-size: "10m"
         max-file: 3
-    ports:
-      - "5433:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
 
+  pgbouncer:
+    env_file:
+      - .env.production
 volumes:
   postgres_data:
