@@ -47,7 +47,7 @@ if (isDevelopment || isTest) {
       format: format.combine(
         format.colorize(),
         format.printf(({ level, message, timestamp, stack, ...meta }) => {
-          const { _service, ...rest } = meta;
+          const { service, ...rest } = meta;
 
           let stackStr = "";
           if (stack) {
@@ -56,7 +56,7 @@ if (isDevelopment || isTest) {
           }
 
           const metaStr = Object.keys(rest).length ? `\n${JSON.stringify(rest, null, 2)}` : "";
-          return `${timestamp} [${level}]: ${message}${metaStr}${stackStr}`;
+          return `${service} ${timestamp} [${level}]: ${message}${metaStr}${stackStr}`;
         })
       ),
     })
