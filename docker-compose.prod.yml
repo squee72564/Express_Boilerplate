@@ -3,7 +3,7 @@ services:
     env_file:
       - .env.production
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
     environment:
       DOCKER: true
     logging:
@@ -15,5 +15,6 @@ services:
   pgbouncer:
     env_file:
       - .env.production
+
 volumes:
   postgres_data:

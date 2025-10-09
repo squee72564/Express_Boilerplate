@@ -5,12 +5,11 @@ services:
     ports:
       - "6432:5432"
     volumes:
-      - postgres_data_dev:/var/lib/postgresql/data
+      - postgres_data_dev:/var/lib/postgresql
 
   pgbouncer:
     env_file:
       - .env.development
-
 
 volumes:
   postgres_data_dev:
