@@ -19,6 +19,9 @@ export const auth = betterAuth({
     },
   },
 
+  trustedOrigins: ["*"],
+  basePath: "/auth/",
+
   // Example for provider like github / google
   //socialProdivers: {
   //  github: {
