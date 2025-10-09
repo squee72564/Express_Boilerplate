@@ -1,6 +1,7 @@
 import app from "./app.js";
 import env from "./config/index.js";
 import logger from "./config/logger.js";
+import { disconnectPrisma } from "./lib/prisma.js";
 
 // Maybe handle db connection here?
 
@@ -8,28 +9,38 @@ const server = app.listen(env.PORT, () => {
   logger.info(`Listening to port ${env.PORT}`);
 });
 
-const exitHandler = () => {
-  if (server) {
-    server.close(() => {
+const exitHandler = async (exitCode = 0) => {
+  try {
+    if (server) {
+      await new Promise<void>((resolve) => server.close(() => resolve()));
       logger.info("Server closed");
-      process.exit(1);
-    });
-  } else {
-    process.exit(1);
+    }
+    await disconnectPrisma();
+  } catch (err) {
+    logger.error("Error during shutdown", err);
+  } finally {
+    process.exit(exitCode);
   }
 };
 
-const unexpectedErrorHandler = (error: Error) => {
+const unexpectedErrorHandler = async (error: Error) => {
   logger.error(error);
-  exitHandler();
+  await exitHandler();
 };
 
 process.on("uncaughtException", unexpectedErrorHandler);
 process.on("unhandledRejection", unexpectedErrorHandler);
 
-process.on("SIGTERM", () => {
+process.on("SIGINT", async () => {
+  logger.info("SIGINT received");
+  await exitHandler();
+});
+
+process.on("SIGTERM", async () => {
   logger.info("SIGTERM received");
-  if (server) {
-    server.close();
-  }
+  await exitHandler();
+});
+
+process.on("beforeExit", async () => {
+  await exitHandler();
 });
