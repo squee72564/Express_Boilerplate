@@ -28,6 +28,28 @@ if (env.NODE_ENV !== "test") {
 // Secruity HTTP headers
 app.use(helmet());
 
+// https://github.com/expressjs/cors
+// Enable cors
+app.use(
+  cors({
+    origin: "*any",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
+// https://express-rate-limit.mintlify.app/overview
+app.use(rateLimiter);
+
+// Gzip compression
+app.use(compression());
+
+// Sanitize request data
+app.use(xssSanitize());
+
+// Protect against HTTP Parameter Pollution
+app.use(hpp());
+
 // Mount express json middleware after Bearer Auth Handler
 // or only apply to routes that dont interact with better-auth
 app.use("/v1", routes.authRoute);
@@ -37,22 +59,6 @@ app.use(express.json());
 
 // Parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
-
-// Sanitize request data
-app.use(xssSanitize());
-
-// Protect against HTTP Parameter Pollution
-app.use(hpp());
-
-// Gzip compression
-app.use(compression());
-
-// https://github.com/expressjs/cors
-// Enable cors
-app.use(cors());
-
-// https://express-rate-limit.mintlify.app/overview
-app.use(rateLimiter);
 
 // api routes
 app.use("/v1", routes.default);
