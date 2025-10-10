@@ -47,7 +47,8 @@ const auth = betterAuth({
   },
 
   trustedOrigins: ["*"],
-  basePath: "/auth/",
+  basePath: "/v1/auth/",
+  baseURL: "http://localhost:3000/v1/auth",
 
   // https://www.better-auth.com/docs/reference/options#emailverification
   emailVerification: {
