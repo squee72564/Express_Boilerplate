@@ -26,6 +26,9 @@ const envSchema = z.object({
   BETTER_AUTH_URL: z.url(),
 
   CORS_ORIGIN: z.string().default("*"),
+
+  GITHUB_CLIENT_ID: z.string().optional(),
+  GITHUB_CLIENT_SECRET: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

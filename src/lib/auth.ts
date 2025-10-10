@@ -1,10 +1,20 @@
-import { AuthContext, betterAuth, type User } from "better-auth";
+import { AuthContext, betterAuth, type User, type BetterAuthOptions } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./prisma.js";
 import env from "../config/index.js";
 import logger from "../config/logger.js";
 
 const database = prismaAdapter(prisma, { provider: "postgresql" });
+
+// Example to optionally include provider like github / google
+const socialProviders: BetterAuthOptions["socialProviders"] = {};
+if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET) {
+  socialProviders.github = {
+    enabled: true,
+    clientId: env.GITHUB_CLIENT_ID,
+    clientSecret: env.GITHUB_CLIENT_SECRET,
+  };
+}
 
 const auth = betterAuth({
   database: database,
@@ -55,16 +65,7 @@ const auth = betterAuth({
   plugins: [],
 
   // Example for provider like github / google
-  //socialProdivers: {
-  //  github: {
-  //    clientId: env.GITHUB_CLIENT_ID as string,
-  //    clientSecret: env.GITHUB_CLIENT_SECRET as string,
-  //  },
-  //  google: {
-  //    clientId: env.GOOGLE_CLIENT_ID as string,
-  //    clientSecret: env.GOOGLE_CLIENT_SECRET as string,
-  //  },
-  //}
+  socialProviders,
 
   // https://www.better-auth.com/docs/reference/options#logger
   logger: {
