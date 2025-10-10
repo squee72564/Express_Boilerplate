@@ -6,7 +6,7 @@ import logger from "../config/logger.js";
 
 const database = prismaAdapter(prisma, { provider: "postgresql" });
 
-export const auth = betterAuth({
+const auth = betterAuth({
   database: database,
   // Other sign-in methods: https://www.better-auth.com/docs/authentication/email-password
   // https://www.better-auth.com/docs/reference/options#emailandpassword
@@ -98,3 +98,5 @@ export const auth = betterAuth({
     },
   },
 });
+
+export default auth;
