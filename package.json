@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "type": "module",
   "scripts": {
-    "build": "rimraf dist && tsc -p ./tsconfig.build.json && mkdir -p ./dist/db/generated/prisma-postgres && cp -r ./src/db/generated/prisma-postgres/* ./dist/db/generated/prisma-postgres",
+    "build": "rimraf dist && tsup",
     "pretty": "npx prettier ./src --write",
     "pretty:check": "npx prettier ./src --check",
     "lint": "npx eslint . --fix",
@@ -14,15 +14,12 @@
     "start:dev": "NODE_ENV=development nodemon --watch src --ext ts --exec tsx src/server.ts",
     "start:pm2": "NODE_ENV=production pm2 start dist/server.js --name express-backend",
     "restart:pm2": "NODE_ENV=production pm2 restart express-backend",
-
     "prisma:generate": "pnpm prisma:generate:dev",
     "prisma:generate:dev": "dotenv -e .env.development -- prisma generate",
     "prisma:generate:prod": "dotenv -e .env.production -- prisma generate",
-
     "prisma:migrate": "pnpm prisma:migrate:dev",
     "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
     "prisma:migrate:prod": "dotenv -e .env.production -- prisma migrate dev",
-
     "prisma:migrate:deploy": "dotenv -e .env.$NODE_ENV -- prisma migrate deploy",
     "prisma:studio": "prisma studio",
     "prisma:push": "prisma db push",
@@ -88,6 +85,7 @@
     "prisma": "^6.17.0",
     "rimraf": "^6.0.1",
     "tsconfig-paths": "^4.2.0",
+    "tsup": "^8.5.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.0"
