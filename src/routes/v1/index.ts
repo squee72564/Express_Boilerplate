@@ -1,11 +1,7 @@
-import express, { type Router, type Request, type Response, type NextFunction } from "express";
+import express, { type Router } from "express";
 import healthRoute from "./health.route.js";
 import authRoute from "./auth.route.js";
-
-interface RouteData {
-  path: string;
-  route: (_req: Request, res: Response, _next: NextFunction) => void;
-}
+import userRoute from "./user.route.js";
 
 const router: Router = express.Router();
 
@@ -14,7 +10,11 @@ const defaultRoutes = [
     path: "/health",
     route: healthRoute,
   },
-] as RouteData[];
+  {
+    path: "/user",
+    route: userRoute,
+  },
+] as { path: string; route: Router }[];
 
 defaultRoutes.forEach((route) => {
   router.use(route.path, route.route);
@@ -22,5 +22,5 @@ defaultRoutes.forEach((route) => {
 
 export default {
   default: router,
-  authRoute: authRoute,
+  authRoute: authRoute, // Export authRoute separately so we can use it before express.json() middleware in src/app.ts
 };
