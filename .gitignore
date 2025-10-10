@@ -160,9 +160,5 @@ Session.vim
 # auto-generated tag files
 tags
 
-/src/db/generated/prisma-sqlite
-/src/db/generated/prisma-postgres
-
 # Do not commit dev db migrations or database
-/prisma/prisma-sqlite/*.db
-/prisma/prisma-sqlite/migrations
+/prisma/generated
