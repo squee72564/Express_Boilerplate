@@ -1,9 +1,10 @@
 import type { Request, Response } from "express";
-import catchAsync from "@/utils/catchAsync.ts";
-import userService from "../services/user.service.js";
 import httpStatus from "http-status";
-import ApiError from "@/utils/ApiError.ts";
-import type { UserFilter } from "../types/user.d.ts";
+
+import catchAsync from "../utils/catchAsync.js";
+import userService from "../services/user.service.js";
+import ApiError from "../utils/ApiError.js";
+import type { UserFilter } from "../types/user.d.js";
 
 const getUserById = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;

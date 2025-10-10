@@ -1,6 +1,6 @@
-import { User } from "../models/index.ts";
-import prisma from "../lib/prisma.ts";
-import type { UserFilter } from "../types/user.d.ts";
+import { User } from "../models/index.js";
+import prisma from "../lib/prisma.js";
+import type { UserFilter } from "../types/user.d.js";
 
 const getUserById = async (id: string): Promise<User | null> => {
   return prisma.user.findUnique({

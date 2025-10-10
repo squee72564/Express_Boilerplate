@@ -4,7 +4,7 @@ import httpStatus from "http-status";
 
 import auth from "../lib/auth.js";
 import ApiError from "../utils/ApiError.js";
-import catchAsync from "../utils/catchAsync.ts";
+import catchAsync from "../utils/catchAsync.js";
 
 const authMiddleware = (_role?: string) =>
   catchAsync(async (req: Request, _res: Response, next: NextFunction) => {
