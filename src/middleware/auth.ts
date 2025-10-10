@@ -1,4 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
+import "../types/express.types.js"; // Augment Express types and explicitly import so tsup includes it
+
 import { fromNodeHeaders } from "better-auth/node";
 import httpStatus from "http-status";
 

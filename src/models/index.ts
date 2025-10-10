@@ -4,7 +4,7 @@ import {
   Post,
   Account,
   Verification,
-} from "../db/generated/prisma-postgres/index.js";
+} from "../../prisma/generated/prisma-postgres/index.js";
 
 // The generated prisma client creates types for each model in the schema.prisma file.
 // You can export them here for easy access throughout your codebase.

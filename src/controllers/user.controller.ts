@@ -4,7 +4,7 @@ import httpStatus from "http-status";
 import catchAsync from "../utils/catchAsync.js";
 import userService from "../services/user.service.js";
 import ApiError from "../utils/ApiError.js";
-import type { UserFilter } from "../types/user.d.js";
+import type { UserFilter } from "../types/user.types.js";
 
 const getUserById = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
