@@ -1,5 +1,6 @@
 import { AuthContext, betterAuth, type User, type BetterAuthOptions } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { admin } from "better-auth/plugins";
 import prisma from "./prisma.js";
 import env from "../config/index.js";
 import logger from "../config/logger.js";
@@ -63,7 +64,7 @@ const auth = betterAuth({
   },
 
   // https://www.better-auth.com/docs/reference/options#plugins
-  plugins: [],
+  plugins: [admin()],
 
   // Example for provider like github / google
   socialProviders,
