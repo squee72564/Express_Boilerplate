@@ -60,13 +60,13 @@ src/
 ├── app.ts              # Express app initialization
 ├── server.ts           # Server entry point
 ├── config/             # Environment variables, logging, and request logging setup
-├── controllers/        # Route controllers — orchestrate request handling logic
-├── db/                 # Database files (generated prisma client here)
+├── controllers/        # Business logic — orchestrate request handling logic
+├── db/                 # Database files
 ├── lib/                # Shared libraries
 ├── middleware/         # Custom middleware
 ├── models/             # Domain models/ORM schema extensions
 ├── routes/             # Express route definitions
-├── services/           # Business logic and integrations with external systems
+├── services/           # Services
 ├── types/              # TypeScript type definitions and declarations
 ├── utils/              # General-purpose utils
 └── validations/        # Schema-based request validation
