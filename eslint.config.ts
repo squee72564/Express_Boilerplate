@@ -10,7 +10,7 @@ export default defineConfig([
       "**/dist/**",
       "**/build/**",
       "src/db/generated/**",
-      "src/db/generated/prisma-postgres/**",
+      "prisma/generated/**",
       "coverage/**",
       "*.config.js",              // ecosystem.config.js, etc.
       "**/*.log",                 // Log files
