@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { Request, RequestHandler, Response } from "express";
 import httpStatus from "http-status";
 
 import catchAsync from "../utils/catchAsync.js";
@@ -6,7 +6,7 @@ import userService from "../services/user.service.js";
 import ApiError from "../utils/ApiError.js";
 import type { UserFilter } from "../types/user.types.js";
 
-const getUserById = catchAsync(async (req: Request, res: Response) => {
+const getUserById: RequestHandler = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const user = await userService.getUserById(id as string);
@@ -19,7 +19,7 @@ const getUserById = catchAsync(async (req: Request, res: Response) => {
   }
 });
 
-const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+const getAllUsers: RequestHandler = catchAsync(async (req: Request, res: Response) => {
   const filter = req.query as unknown as UserFilter;
   try {
     const users = await userService.getAllUsers(filter);
@@ -30,6 +30,6 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 });
 
 export default {
-  getUserById,
-  getAllUsers,
+  getUserById: getUserById as RequestHandler,
+  getAllUsers: getAllUsers as RequestHandler,
 };
