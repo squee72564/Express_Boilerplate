@@ -1,7 +1,6 @@
 import {
   User,
   Session,
-  Post,
   Account,
   Verification,
 } from "../../prisma/generated/prisma-postgres/index.js";
@@ -12,4 +11,4 @@ import {
 // If you add new models to your schema.prisma file, remember to run `npx prisma generate`
 // to update the generated client and then add the new models to this export list.
 
-export type { User, Session, Account, Verification, Post };
+export type { User, Session, Account, Verification };
