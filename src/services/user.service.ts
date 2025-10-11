@@ -2,10 +2,6 @@ import { User } from "../models/index.js";
 import prisma from "../lib/prisma.js";
 import type { UserFilter } from "../types/user.types.js";
 
-import auth from "@/lib/auth.ts";
-
-auth.api.getUser({});
-
 const getUserById = async (id: string): Promise<User | null> => {
   return prisma.user.findUnique({
     where: { id },
