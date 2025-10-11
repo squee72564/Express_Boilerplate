@@ -3,48 +3,59 @@
 import auth from "@/lib/auth.ts";
 import type { Request } from "express";
 import {
-  CreateUserParams,
-  ListUserParams,
-  SetUserRoleParams,
-  SetUserPasswordParams,
-  UpdateUserParams,
-  BanUserParams,
-  UnbanUserParams,
-  ListUserSessionsParams,
-  RevokeUserSessionParams,
-  RevokeAllUserSessionParams,
-  ImpersonateUserParams,
-  RemoveUserParams,
+  CreateUserArgs,
+  ListUserArgs,
+  SetUserRoleArgs,
+  SetUserPasswordArgs,
+  UpdateUserArgs,
+  BanUserArgs,
+  UnbanUserArgs,
+  ListUserSessionsArgs,
+  RevokeUserSessionArgs,
+  RevokeAllUserSessionArgs,
+  ImpersonateUserArgs,
+  RemoveUserArgs,
 } from "../types/admin.types.js";
 
-const createUser = async (params: CreateUserParams, req: Request) => {
+const createUser = async (args: CreateUserArgs, req: Request) => {
   return auth.api.createUser({
     body: {
-      email: params.email,
-      password: params.password,
-      name: params.name,
-      role: params.role,
-      data: params.data,
+      email: args.email,
+      password: args.password,
+      name: args.name,
+      role: args.role,
+      data: args.data,
     },
     headers: req.headers,
   });
 };
 
 // List Users
-const listUsers = async (params: ListUserParams, req: Request) => {
+const listUsers = async (args: ListUserArgs, req: Request) => {
   return auth.api.listUsers({
-    query: { ...params },
+    query: {
+      searchValue: args.searchValue,
+      searchField: args.searchField,
+      searchOperator: args.searchOperator,
+      limit: args.limit,
+      offset: args.offset,
+      sortBy: args.sortBy,
+      sortDirection: args.sortDirection,
+      filterField: args.filterField,
+      filterValue: args.filterValue,
+      filterOperator: args.filterOperator,
+    },
     headers: req.headers,
   });
 };
 
 // Set User Role
 
-const setUserRole = async (params: SetUserRoleParams, req: Request) => {
+const setUserRole = async (args: SetUserRoleArgs, req: Request) => {
   return auth.api.setRole({
     body: {
-      userId: params.userId,
-      role: params.role,
+      userId: args.userId,
+      role: args.role,
     },
     headers: req.headers,
   });
@@ -52,34 +63,34 @@ const setUserRole = async (params: SetUserRoleParams, req: Request) => {
 
 // Set User Password
 
-const setUserPassword = async (params: SetUserPasswordParams, req: Request) => {
+const setUserPassword = async (args: SetUserPasswordArgs, req: Request) => {
   return auth.api.setUserPassword({
     body: {
-      userId: params.userId,
-      newPassword: params.newPassword,
+      userId: args.userId,
+      newPassword: args.newPassword,
     },
     headers: req.headers,
   });
 };
 
 // Update User
-const updateUser = async (params: UpdateUserParams, req: Request) => {
+const updateUser = async (args: UpdateUserArgs, req: Request) => {
   return auth.api.adminUpdateUser({
     body: {
-      userId: params.userId,
-      data: params.data,
+      userId: args.userId,
+      data: args.data,
     },
     headers: req.headers,
   });
 };
 
 // Ban User
-const banUser = async (params: BanUserParams, req: Request) => {
+const banUser = async (args: BanUserArgs, req: Request) => {
   return auth.api.banUser({
     body: {
-      userId: params.userId,
-      banReason: params.banReason,
-      banExpiresIn: params.banExpiresIn,
+      userId: args.userId,
+      banReason: args.banReason,
+      banExpiresIn: args.banExpiresIn,
     },
     headers: req.headers,
   });
@@ -87,50 +98,50 @@ const banUser = async (params: BanUserParams, req: Request) => {
 
 // Unban User
 
-const unbanUser = async (params: UnbanUserParams, req: Request) => {
+const unbanUser = async (args: UnbanUserArgs, req: Request) => {
   return auth.api.unbanUser({
     body: {
-      userId: params.userId,
+      userId: args.userId,
     },
     headers: req.headers,
   });
 };
 
 // List User Sessions
-const listUserSessions = async (params: ListUserSessionsParams, req: Request) => {
+const listUserSessions = async (args: ListUserSessionsArgs, req: Request) => {
   return auth.api.listUserSessions({
     body: {
-      userId: params.userId,
+      userId: args.userId,
     },
     headers: req.headers,
   });
 };
 
 // Revoke User Session
-const revokeUserSession = async (params: RevokeUserSessionParams, req: Request) => {
+const revokeUserSession = async (args: RevokeUserSessionArgs, req: Request) => {
   return auth.api.revokeUserSession({
     body: {
-      sessionToken: params.sessionToken,
+      sessionToken: args.sessionToken,
     },
     headers: req.headers,
   });
 };
 
 // Revoke All Session for User
-const revokeAllUserSessions = async (params: RevokeAllUserSessionParams, req: Request) => {
+const revokeAllUserSessions = async (args: RevokeAllUserSessionArgs, req: Request) => {
   return auth.api.revokeUserSessions({
     body: {
-      userId: params.userId,
+      userId: args.userId,
     },
     headers: req.headers,
   });
 };
 
 // Impersonate User
-const impersonateUser = async (params: ImpersonateUserParams, req: Request) => {
+const impersonateUser = async (args: ImpersonateUserArgs, req: Request) => {
   return auth.api.impersonateUser({
     body: {
-      userId: params.userId,
+      userId: args.userId,
     },
     headers: req.headers,
   });
@@ -144,10 +155,10 @@ const stopImpersonatingUser = async (req: Request) => {
 };
 
 // Remove User
-const removeUser = async (params: RemoveUserParams, req: Request) => {
+const removeUser = async (args: RemoveUserArgs, req: Request) => {
   return auth.api.removeUser({
     body: {
-      userId: params.userId,
+      userId: args.userId,
     },
     headers: req.headers,
   });
