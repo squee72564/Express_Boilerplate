@@ -12,62 +12,66 @@ export interface ListUserRequest extends Request {
   body: ListUserParams;
 }
 
-export type SetUserRoleParams = z.infer<typeof adminValidations.SetUserRoleRequestSchema>["body"];
+export type SetUserRoleParams = z.infer<typeof adminValidations.SetUserRoleRequestSchema>["body"] &
+  z.infer<typeof adminValidations.SetUserRoleRequestSchema>["params"];
 export interface SetUserRoleRequest extends Request {
   body: SetUserRoleRequest;
 }
 
 export type SetUserPasswordParams = z.infer<
   typeof adminValidations.SetUserPasswordRequestSchema
->["body"];
+>["body"] &
+  z.infer<typeof adminValidations.SetUserPasswordRequestSchema>["params"];
 export interface SetUserPasswordRequest extends Request {
   body: SetUserPasswordParams;
 }
 
-export type UpdateUserParams = z.infer<typeof adminValidations.UpdateUserRequestSchema>["body"];
+export type UpdateUserParams = z.infer<typeof adminValidations.UpdateUserRequestSchema>["body"] &
+  z.infer<typeof adminValidations.UpdateUserRequestSchema>["params"];
 export interface UpdateUserRequest extends Request {
   body: UpdateUserParams;
 }
 
-export type BanUserParams = z.infer<typeof adminValidations.BanUserRequestSchema>["body"];
+export type BanUserParams = z.infer<typeof adminValidations.BanUserRequestSchema>["body"] &
+  z.infer<typeof adminValidations.BanUserRequestSchema>["params"];
 export interface BanUserRequest extends Request {
   body: BanUserParams;
 }
 
-export type UnbanUserParams = z.infer<typeof adminValidations.UnbanUserRequestSchema>["body"];
+export type UnbanUserParams = z.infer<typeof adminValidations.UnbanUserRequestSchema>["params"];
 export interface UnbanUserRequest extends Request {
   body: UnbanUserParams;
 }
 
 export type ListUserSessionsParams = z.infer<
   typeof adminValidations.ListUserSessionsRequestSchema
->["body"];
+>["params"];
 export interface ListUserSessionsRequest extends Request {
   body: ListUserSessionsParams;
 }
 
 export type RevokeUserSessionParams = z.infer<
   typeof adminValidations.RevokeUserSessionRequestSchema
->["body"];
+>["params"];
 export interface RevokeUserSessionRequest extends Request {
   body: RevokeUserSessionParams;
 }
 
 export type RevokeAllUserSessionParams = z.infer<
   typeof adminValidations.RevokeAllUserSessionRequestSchema
->["body"];
+>["params"];
 export interface RevokeAllUserSessionRequest extends Request {
   body: RevokeAllUserSessionParams;
 }
 
 export type ImpersonateUserParams = z.infer<
   typeof adminValidations.ImpersonateUserRequestSchema
->["body"];
+>["params"];
 export interface ImpersonateUserRequest extends Request {
   body: ImpersonateUserParams;
 }
 
-export type RemoveUserParams = z.infer<typeof adminValidations.RemoveUserRequestSchema>["body"];
+export type RemoveUserParams = z.infer<typeof adminValidations.RemoveUserRequestSchema>["params"];
 export interface RemoveUserRequest extends Request {
   body: RemoveUserParams;
 }
