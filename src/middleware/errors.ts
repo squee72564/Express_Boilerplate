@@ -13,11 +13,14 @@ export const errorConverter = (
 ) => {
   let error = err;
 
-  if (!(error instanceof ApiError)) {
-    const statusCode = error.statusCode ? httpStatus.BAD_REQUEST : httpStatus.INTERNAL_SERVER_ERROR;
-
-    const message = error.message || httpStatus[statusCode];
-    error = new ApiError(statusCode, message, false, err.stack);
+  if (error instanceof ApiError) {
+    error = err;
+  } else if (error instanceof Error) {
+    const statusCode = error.statusCode ? error.statusCode : httpStatus.INTERNAL_SERVER_ERROR;
+    error = new ApiError(statusCode, err.message, false, err.stack);
+  } else {
+    const message = typeof err === "string" ? err : "Internal Server Error";
+    error = new ApiError(httpStatus.INTERNAL_SERVER_ERROR, message, false);
   }
   next(error);
 };
