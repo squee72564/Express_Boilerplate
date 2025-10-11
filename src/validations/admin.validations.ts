@@ -1,14 +1,10 @@
 import { z } from "zod";
-import { defaultRoles } from "better-auth/plugins";
-import type { AdminOptions, InferAdminRolesFromOption } from "better-auth/plugins";
 
-// Helpers for expected role type
-type Roles = InferAdminRolesFromOption<AdminOptions>;
-const roleKeys = Object.keys(defaultRoles) as (keyof Omit<typeof defaultRoles, "member">)[];
-const RoleSchema = z.union([
-  z.enum(roleKeys as [Roles, ...Roles[]]),
-  z.array(z.enum(roleKeys as [Roles, ...Roles[]])),
-]);
+// Hardcode roles; the other method I tried wasnt available at runtime
+const roles = ["user", "admin"] as const;
+type _Roles = (typeof roles)[number];
+
+const RoleSchema = z.union([z.enum(roles), z.array(z.enum(roles))]);
 
 // Userid within params
 const WithUserParam = {
