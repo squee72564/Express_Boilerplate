@@ -1,62 +1,44 @@
 // SEE: https://www.better-auth.com/docs/plugins/admin
 
 import auth from "@/lib/auth.ts";
-import type { AdminOptions, InferAdminRolesFromOption } from "better-auth/plugins";
 import type { Request } from "express";
+import {
+  CreateUserParams,
+  ListUserParams,
+  SetUserRoleParams,
+  SetUserPasswordParams,
+  UpdateUserParams,
+  BanUserParams,
+  UnbanUserParams,
+  ListUserSessionsParams,
+  RevokeUserSessionParams,
+  RevokeAllUserSessionParams,
+  ImpersonateUserParams,
+  RemoveUserParams,
+} from "../types/admin.types.js";
 
-type RolesFromOptions<O extends AdminOptions | undefined> =
-  | InferAdminRolesFromOption<O>
-  | InferAdminRolesFromOption<O>[];
-
-type Roles = RolesFromOptions<AdminOptions>;
-
-interface CreateUserParams {
-  email: string;
-  password: string;
-  name: string;
-  role?: Roles;
-  data?: Record<string, unknown>; // TODO: Maybe change this to reflect the actual data in the user model dynamically?
-}
-
-// Create user
 const createUser = async (params: CreateUserParams, req: Request) => {
   return auth.api.createUser({
-    body: { ...params },
+    body: {
+      email: params.email,
+      password: params.password,
+      name: params.name,
+      role: params.role,
+      data: params.data,
+    },
     headers: req.headers,
   });
 };
 
-interface ListUserParams {
-  query: {
-    searchValue?: string;
-    searchField?: "email" | "name";
-    searchOperator?: "contains" | "starts_with" | "ends_with";
-    limit?: string | number;
-    offset?: string | number;
-    sortBy?: "string";
-    sortDirection?: "asc" | "desc";
-    filterField?: string;
-    filterValue?: string | number | boolean;
-    filterOperator?: "eq" | "ne" | "lt" | "lte" | "gt" | "gte";
-  };
-  limit: number;
-  offset: number;
-}
-
 // List Users
 const listUsers = async (params: ListUserParams, req: Request) => {
   return auth.api.listUsers({
-    query: params,
+    query: { ...params },
     headers: req.headers,
   });
 };
 
 // Set User Role
-
-interface SetUserRoleParams {
-  userId: string;
-  role: Roles;
-}
 
 const setUserRole = async (params: SetUserRoleParams, req: Request) => {
   return auth.api.setRole({
@@ -70,11 +52,6 @@ const setUserRole = async (params: SetUserRoleParams, req: Request) => {
 
 // Set User Password
 
-interface SetUserPasswordParams {
-  userId: string;
-  newPassword: string;
-}
-
 const setUserPassword = async (params: SetUserPasswordParams, req: Request) => {
   return auth.api.setUserPassword({
     body: {
@@ -86,12 +63,6 @@ const setUserPassword = async (params: SetUserPasswordParams, req: Request) => {
 };
 
 // Update User
-
-interface UpdateUserParams {
-  userId: string;
-  data: Record<string, unknown>; // TODO: Maybe change this to reflect the actual data in the user model dynamically?
-}
-
 const updateUser = async (params: UpdateUserParams, req: Request) => {
   return auth.api.adminUpdateUser({
     body: {
@@ -103,13 +74,6 @@ const updateUser = async (params: UpdateUserParams, req: Request) => {
 };
 
 // Ban User
-
-interface BanUserParams {
-  userId: string;
-  banReason?: string;
-  banExpiresIn?: number; // In Seconds
-}
-
 const banUser = async (params: BanUserParams, req: Request) => {
   return auth.api.banUser({
     body: {
@@ -123,10 +87,6 @@ const banUser = async (params: BanUserParams, req: Request) => {
 
 // Unban User
 
-interface UnbanUserParams {
-  userId: string;
-}
-
 const unbanUser = async (params: UnbanUserParams, req: Request) => {
   return auth.api.unbanUser({
     body: {
@@ -137,11 +97,6 @@ const unbanUser = async (params: UnbanUserParams, req: Request) => {
 };
 
 // List User Sessions
-
-interface ListUserSessionsParams {
-  userId: string;
-}
-
 const listUserSessions = async (params: ListUserSessionsParams, req: Request) => {
   return auth.api.listUserSessions({
     body: {
@@ -152,11 +107,6 @@ const listUserSessions = async (params: ListUserSessionsParams, req: Request) =>
 };
 
 // Revoke User Session
-
-interface RevokeUserSessionParams {
-  sessionToken: string;
-}
-
 const revokeUserSession = async (params: RevokeUserSessionParams, req: Request) => {
   return auth.api.revokeUserSession({
     body: {
@@ -167,12 +117,7 @@ const revokeUserSession = async (params: RevokeUserSessionParams, req: Request) 
 };
 
 // Revoke All Session for User
-
-interface RevokeAllUserSessionsParams {
-  userId: string;
-}
-
-const revokeAllUserSessions = async (params: RevokeAllUserSessionsParams, req: Request) => {
+const revokeAllUserSessions = async (params: RevokeAllUserSessionParams, req: Request) => {
   return auth.api.revokeUserSessions({
     body: {
       userId: params.userId,
@@ -182,11 +127,6 @@ const revokeAllUserSessions = async (params: RevokeAllUserSessionsParams, req: R
 };
 
 // Impersonate User
-
-interface ImpersonateUserParams {
-  userId: string;
-}
-
 const impersonateUser = async (params: ImpersonateUserParams, req: Request) => {
   return auth.api.impersonateUser({
     body: {
@@ -197,7 +137,6 @@ const impersonateUser = async (params: ImpersonateUserParams, req: Request) => {
 };
 
 // Stop Impersonating User
-
 const stopImpersonatingUser = async (req: Request) => {
   return auth.api.stopImpersonating({
     headers: req.headers,
@@ -205,11 +144,6 @@ const stopImpersonatingUser = async (req: Request) => {
 };
 
 // Remove User
-
-interface RemoveUserParams {
-  userId: string;
-}
-
 const removeUser = async (params: RemoveUserParams, req: Request) => {
   return auth.api.removeUser({
     body: {
