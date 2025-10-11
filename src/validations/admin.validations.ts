@@ -10,6 +10,13 @@ const RoleSchema = z.union([
   z.array(z.enum(roleKeys as [Roles, ...Roles[]])),
 ]);
 
+// Userid within params
+const WithUserParam = {
+  params: z.object({
+    userId: z.string(),
+  }),
+};
+
 // Create use
 const CreateUserRequestSchema = z.object({
   body: z.object({
@@ -39,32 +46,34 @@ const ListUserRequestSchema = z.object({
 
 // Set User Role
 const SetUserRoleRequestSchema = z.object({
+  ...WithUserParam,
   body: z.object({
-    userId: z.string(),
     role: RoleSchema,
   }),
 });
 
 // Set User Password
 const SetUserPasswordRequestSchema = z.object({
+  ...WithUserParam,
+
   body: z.object({
-    userId: z.string(),
     newPassword: z.string(),
   }),
 });
 
 // Update User
 const UpdateUserRequestSchema = z.object({
+  ...WithUserParam,
   body: z.object({
-    userId: z.string(),
     data: z.record(z.string(), z.unknown()),
   }),
 });
 
 // Ban User
 const BanUserRequestSchema = z.object({
+  ...WithUserParam,
+
   body: z.object({
-    userId: z.string(),
     banReason: z.string().optional(),
     banExpiresIn: z.number().optional(),
   }),
@@ -72,37 +81,30 @@ const BanUserRequestSchema = z.object({
 
 // Unban user
 const UnbanUserRequestSchema = z.object({
-  body: z.object({
-    userId: z.string(),
-  }),
+  ...WithUserParam,
 });
 
 // List User Sessions
 const ListUserSessionsRequestSchema = z.object({
-  body: z.object({
-    userId: z.string(),
-  }),
+  ...WithUserParam,
 });
 
 // Revoke User Session
 const RevokeUserSessionRequestSchema = z.object({
-  body: z.object({
+  params: z.object({
+    userId: z.string(),
     sessionToken: z.string(),
   }),
 });
 
 // Revoke All Session for User
 const RevokeAllUserSessionRequestSchema = z.object({
-  body: z.object({
-    userId: z.string(),
-  }),
+  ...WithUserParam,
 });
 
 // Impersonate User
 const ImpersonateUserRequestSchema = z.object({
-  body: z.object({
-    userId: z.string(),
-  }),
+  ...WithUserParam,
 });
 
 // Stop Impersonating User
@@ -110,9 +112,7 @@ const StopImpersonatingRequestSchema = z.object({});
 
 // Remove User
 const RemoveUserRequestSchema = z.object({
-  body: z.object({
-    userId: z.string(),
-  }),
+  ...WithUserParam,
 });
 
 export default {
