@@ -1,15 +1,29 @@
 import { z } from "zod";
-import adminValidations from "./admin.validations.js";
+
+const roles = ["user", "admin"] as const;
+type _Roles = (typeof roles)[number];
+
+const getUserWithSession = z.object({});
 
 const getUserById = z.object({
-  query: z.object({
-    id: z.uuid(),
+  params: z.object({
+    id: z.string(),
   }),
 });
 
-const listUsers = adminValidations.ListUserRequestSchema; // Same as admin's list users
+const listPublicUsers = z.object({
+  query: z
+    .object({
+      limit: z.string().optional(),
+      offset: z.string().optional(),
+      role: z.enum(roles).optional(),
+      sort: z.enum(["asc", "desc"]).optional(),
+    })
+    .optional(),
+});
 
 export default {
+  getUserWithSession,
   getUserById,
-  listUsers,
+  listPublicUsers,
 };
