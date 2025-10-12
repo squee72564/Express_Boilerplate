@@ -1,9 +1,10 @@
 import { AuthContext, betterAuth, type User, type BetterAuthOptions } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { admin } from "better-auth/plugins";
+import { admin as adminPlugin } from "better-auth/plugins";
 import prisma from "./prisma.js";
 import env from "../config/index.js";
 import logger from "../config/logger.js";
+import { ac, admin, superAdmin, user } from "./permissions.js";
 
 const database = prismaAdapter(prisma, { provider: "postgresql" });
 
@@ -64,7 +65,16 @@ const auth = betterAuth({
   },
 
   // https://www.better-auth.com/docs/reference/options#plugins
-  plugins: [admin()],
+  plugins: [
+    adminPlugin({
+      ac,
+      roles: {
+        admin,
+        user,
+        superAdmin,
+      },
+    }),
+  ],
 
   // Example for provider like github / google
   socialProviders,

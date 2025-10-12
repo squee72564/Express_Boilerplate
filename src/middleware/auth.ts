@@ -30,6 +30,17 @@ const authMiddleware: (allowedRoles?: string[], permissions?: PermissionCheck) =
     req.session = session;
     req.user = user;
 
+    const isAdmin = user.role === "admin";
+    const isSuperAdmin = user.role === "superAdmin";
+
+    if (isSuperAdmin) {
+      return next();
+    }
+
+    if (allowedRoles && !allowedRoles.includes("superAdmin") && isAdmin) {
+      return next();
+    }
+
     if (allowedRoles && allowedRoles.length > 0) {
       const roles = user.role ? user.role.split(",") : [];
       const hasAllowedRole = roles.some((r) => allowedRoles.includes(r.trim()));
