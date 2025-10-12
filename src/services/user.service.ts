@@ -1,36 +1,41 @@
-import type { Request } from "express";
+import { PublicUser } from "../models/index.js";
+import prisma from "../lib/prisma.js";
+import { ListPublicUsersArgs } from "@/types/user.types.ts";
 
-import auth from "../lib/auth.js";
-import { GetUserArgs, ListUsersArgs } from "../types/user.types.ts";
-
-const getUserById = async (args: GetUserArgs, req: Request) => {
-  return auth.api.getUser({
-    query: {
-      id: args.id,
+const getPublicUserById = async (id: string): Promise<PublicUser | null> => {
+  return prisma.user.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      createdAt: true,
     },
-    headers: req.headers,
   });
 };
 
-const listUsers = async (args: ListUsersArgs, req: Request) => {
-  return auth.api.listUsers({
-    query: {
-      searchValue: args.searchValue,
-      searchField: args.searchField,
-      searchOperator: args.searchOperator,
-      limit: args.limit,
-      offset: args.offset,
-      sortBy: args.sortBy,
-      sortDirection: args.sortDirection,
-      filterField: args.filterField,
-      filterValue: args.filterValue,
-      filterOperator: args.filterOperator,
+const listPublicUsers = async (args: ListPublicUsersArgs): Promise<PublicUser[]> => {
+  const { limit, offset, role, sort } = args || {};
+
+  const users = prisma.user.findMany({
+    where: {
+      role: role || "user",
     },
-    headers: req.headers,
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      createdAt: true,
+    },
+    take: limit ? parseInt(limit) : 10,
+    skip: offset ? parseInt(offset) : 0,
+    orderBy: { createdAt: sort || "asc" },
   });
+
+  return users;
 };
 
 export default {
-  getUserById,
-  listUsers,
+  getPublicUserById,
+  listPublicUsers,
 };
