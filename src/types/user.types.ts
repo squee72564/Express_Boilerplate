@@ -1,7 +1,5 @@
-// This type defines the structure for filtering users in queries
-export type UserFilter = Partial<{
-  id: string;
-  name: string;
-  email: string;
-  emailVerified: boolean;
-}>;
+import userValidations from "@/validations/user.validations.ts";
+import { ZodRequest } from "../utils/zodReqeust.ts";
+
+export type GetUserRequest = ZodRequest<typeof userValidations.getUserById>;
+export type GetUserArgs = GetUserRequest["query"];
