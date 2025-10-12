@@ -5,7 +5,7 @@ export type CreateUserRequest = ZodRequest<typeof adminValidations.CreateUserReq
 export type CreateUserArgs = CreateUserRequest["body"];
 
 export type ListUserRequest = ZodRequest<typeof adminValidations.ListUserRequestSchema>;
-export type ListUserArgs = ListUserRequest["body"];
+export type ListUserArgs = ListUserRequest["query"];
 
 export type SetUserRoleRequest = ZodRequest<typeof adminValidations.SetUserRoleRequestSchema>;
 export type SetUserRoleArgs = SetUserRoleRequest["params"] & SetUserRoleRequest["body"];

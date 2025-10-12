@@ -26,7 +26,7 @@ const CreateUserRequestSchema = z.object({
 
 // List Users
 const ListUserRequestSchema = z.object({
-  body: z.object({
+  query: z.object({
     searchValue: z.string().optional(),
     searchField: z.enum(["email", "name"]).optional(),
     searchOperator: z.enum(["contains", "starts_with", "ends_with"]).optional(),
