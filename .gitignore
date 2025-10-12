@@ -162,3 +162,4 @@ tags
 
 # Do not commit dev db migrations or database
 /prisma/generated
+/prisma/migrations
