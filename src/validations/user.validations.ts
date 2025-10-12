@@ -1,4 +1,5 @@
 import { z } from "zod";
+import adminValidations from "./admin.validations.js";
 
 const getUserById = z.object({
   query: z.object({
@@ -6,6 +7,9 @@ const getUserById = z.object({
   }),
 });
 
+const listUsers = adminValidations.ListUserRequestSchema; // Same as admin's list users
+
 export default {
   getUserById,
+  listUsers,
 };

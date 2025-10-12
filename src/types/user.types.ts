@@ -3,3 +3,6 @@ import { ZodRequest } from "../utils/zodReqeust.ts";
 
 export type GetUserRequest = ZodRequest<typeof userValidations.getUserById>;
 export type GetUserArgs = GetUserRequest["query"];
+
+export type ListUsersRequest = ZodRequest<typeof userValidations.listUsers>;
+export type ListUsersArgs = ListUsersRequest["body"];

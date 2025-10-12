@@ -1,8 +1,7 @@
 import type { Request } from "express";
 
 import auth from "../lib/auth.js";
-import { ListUserArgs } from "../types/admin.types.js";
-import { GetUserArgs } from "../types/user.types.ts";
+import { GetUserArgs, ListUsersArgs } from "../types/user.types.ts";
 
 const getUserById = async (args: GetUserArgs, req: Request) => {
   return auth.api.getUser({
@@ -13,7 +12,7 @@ const getUserById = async (args: GetUserArgs, req: Request) => {
   });
 };
 
-const listUsers = async (args: ListUserArgs, req: Request) => {
+const listUsers = async (args: ListUsersArgs, req: Request) => {
   return auth.api.listUsers({
     query: {
       searchValue: args.searchValue,
