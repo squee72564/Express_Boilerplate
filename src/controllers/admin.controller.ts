@@ -2,7 +2,7 @@ import type { NextFunction, Response } from "express";
 import httpStatus from "http-status";
 
 import catchAsync from "../utils/catchAsync.js";
-import adminService from "../services/admin.service.js";
+import { adminService } from "../services/index.js";
 
 import {
   BanUserRequest,
