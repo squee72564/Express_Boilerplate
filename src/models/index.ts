@@ -11,4 +11,9 @@ import {
 // If you add new models to your schema.prisma file, remember to run `npx prisma generate`
 // to update the generated client and then add the new models to this export list.
 
-export type { User, Session, Account, Verification };
+type PublicUser = Omit<
+  User,
+  "email" | "emailVerified" | "role" | "banned" | "banReason" | "banExpires" | "updatedAt"
+>;
+
+export type { PublicUser, User, Session, Account, Verification };
