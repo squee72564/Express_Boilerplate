@@ -7,11 +7,27 @@ import auth from "../../middleware/auth.js";
 const router: Router = express.Router();
 
 router
-  .route("/")
-  .get(auth(["user"]), validate(userValidations.listUsers), userController.listUsers);
+  .route("/self")
+  .get(
+    auth(["user"]),
+    validate(userValidations.getUserWithSession),
+    userController.getUserWithSession
+  );
 
 router
   .route("/:id")
-  .get(auth(["user"]), validate(userValidations.getUserById), userController.getUserById);
+  .get(
+    auth(["user"], { user: ["listPublicUsers"] }),
+    validate(userValidations.getUserById),
+    userController.getPublicUserById
+  );
+
+router
+  .route("/")
+  .get(
+    auth(["user"], { user: ["listPublicUsers"] }),
+    validate(userValidations.listPublicUsers),
+    userController.listPublicUsers
+  );
 
 export default router;
