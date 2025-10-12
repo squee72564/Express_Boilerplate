@@ -1,5 +1,4 @@
+import adminService from "./admin.service.js";
 import userService from "./user.service.js";
 
-export default {
-  userService: userService,
-};
+export { userService, adminService };
