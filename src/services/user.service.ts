@@ -1,25 +1,37 @@
-import { User } from "../models/index.js";
-import prisma from "../lib/prisma.js";
-import type { UserFilter } from "../types/user.types.js";
+import type { Request } from "express";
 
-const getUserById = async (id: string): Promise<User | null> => {
-  return prisma.user.findUnique({
-    where: { id },
+import auth from "../lib/auth.js";
+import { ListUserArgs } from "../types/admin.types.js";
+import { GetUserArgs } from "../types/user.types.ts";
+
+const getUserById = async (args: GetUserArgs, req: Request) => {
+  return auth.api.getUser({
+    query: {
+      id: args.id,
+    },
+    headers: req.headers,
   });
 };
 
-const getAllUsers = async (filter?: UserFilter): Promise<User[]> => {
-  return prisma.user.findMany({
-    where: filter
-      ? {
-          ...filter,
-          emailVerified: filter.emailVerified ?? false,
-        }
-      : {},
+const listUsers = async (args: ListUserArgs, req: Request) => {
+  return auth.api.listUsers({
+    query: {
+      searchValue: args.searchValue,
+      searchField: args.searchField,
+      searchOperator: args.searchOperator,
+      limit: args.limit,
+      offset: args.offset,
+      sortBy: args.sortBy,
+      sortDirection: args.sortDirection,
+      filterField: args.filterField,
+      filterValue: args.filterValue,
+      filterOperator: args.filterOperator,
+    },
+    headers: req.headers,
   });
 };
 
 export default {
   getUserById,
-  getAllUsers,
+  listUsers,
 };
