@@ -1,5 +1,4 @@
 import userController from "../controllers/user.controller.js";
+import adminController from "../controllers/admin.controller.js";
 
-export default {
-  userController: userController,
-};
+export { userController, adminController };
