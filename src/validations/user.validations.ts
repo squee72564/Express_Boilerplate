@@ -1,7 +1,5 @@
 import { z } from "zod";
-
-const roles = ["user", "admin"] as const;
-type _Roles = (typeof roles)[number];
+import { roles as definedRoles } from "../lib/permissions.js";
 
 const getUserWithSession = z.object({});
 
@@ -16,7 +14,7 @@ const listPublicUsers = z.object({
     .object({
       limit: z.string().optional(),
       offset: z.string().optional(),
-      role: z.enum(roles).optional(),
+      role: z.enum(definedRoles).optional(),
       sort: z.enum(["asc", "desc"]).optional(),
     })
     .optional(),

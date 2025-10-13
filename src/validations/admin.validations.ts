@@ -1,10 +1,7 @@
 import { z } from "zod";
+import { roles as definedRoles } from "../lib/permissions.js";
 
-// Hardcode roles; the other method I tried wasnt available at runtime
-const roles = ["user", "admin"] as const;
-type _Roles = (typeof roles)[number];
-
-const RoleSchema = z.union([z.enum(roles), z.array(z.enum(roles))]);
+const RoleSchema = z.union([z.enum(definedRoles), z.array(z.enum(definedRoles))]);
 
 // Userid within params
 const WithUserParam = {
