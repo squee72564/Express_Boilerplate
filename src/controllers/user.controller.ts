@@ -7,6 +7,7 @@ import {
   GetUserWithSessionRequest,
   ListPublicUsersRequest,
 } from "../types/user.types.js";
+import ApiError from "@/utils/ApiError.ts";
 
 const getUserWithSession = catchAsync(async (req: GetUserWithSessionRequest, res: Response) => {
   return res.status(200).json({
@@ -17,6 +18,9 @@ const getUserWithSession = catchAsync(async (req: GetUserWithSessionRequest, res
 
 const getPublicUserById = catchAsync(async (req: GetUserRequest, res: Response) => {
   const user = await userService.getPublicUserById(req.params.id);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
   return res.status(200).json({ user });
 });
 
