@@ -1,16 +1,11 @@
-import { PublicUser } from "../models/index.js";
+import { PublicUser, PublicUserSelect } from "../models/index.js";
 import prisma from "../lib/prisma.js";
 import { ListPublicUsersArgs } from "@/types/user.types.ts";
 
 const getPublicUserById = async (id: string): Promise<PublicUser | null> => {
   return prisma.user.findUnique({
     where: { id },
-    select: {
-      id: true,
-      name: true,
-      image: true,
-      createdAt: true,
-    },
+    select: PublicUserSelect,
   });
 };
 
@@ -21,12 +16,7 @@ const listPublicUsers = async (args: ListPublicUsersArgs): Promise<PublicUser[]>
     where: {
       role: role || "user",
     },
-    select: {
-      id: true,
-      name: true,
-      image: true,
-      createdAt: true,
-    },
+    select: PublicUserSelect,
     take: limit ? parseInt(limit) : 10,
     skip: offset ? parseInt(offset) : 0,
     orderBy: { createdAt: sort || "asc" },
