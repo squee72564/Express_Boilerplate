@@ -1,25 +1,27 @@
 import { createAccessControl } from "better-auth/plugins/access";
 import { defaultStatements, adminAc } from "better-auth/plugins/admin/access";
 
+export const defaultRoles = ["user"] as const;
+export const adminRoles = ["admin", "superAdmin"] as const;
+export const roles = [...defaultRoles, ...adminRoles] as const;
+
 const statement = {
   ...defaultStatements,
-  user: ["listPublicUsers"],
+  publicUser: ["listPublicUsers"],
 } as const;
 
-const ac = createAccessControl(statement);
+export const ac = createAccessControl(statement);
 
-const superAdmin = ac.newRole({
+export const superAdmin = ac.newRole({
   ...adminAc.statements,
-  user: ["listPublicUsers"],
+  publicUser: ["listPublicUsers"],
 });
 
-const admin = ac.newRole({
+export const admin = ac.newRole({
   ...adminAc.statements,
-  user: ["listPublicUsers"],
+  publicUser: ["listPublicUsers"],
 });
 
-const user = ac.newRole({
-  user: ["listPublicUsers"],
+export const user = ac.newRole({
+  publicUser: ["listPublicUsers"],
 });
-
-export { ac, superAdmin, admin, user };
