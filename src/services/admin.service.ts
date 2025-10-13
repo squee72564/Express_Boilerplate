@@ -1,7 +1,6 @@
 // SEE: https://www.better-auth.com/docs/plugins/admin
 
 import auth from "@/lib/auth.ts";
-import type { Request } from "express";
 import {
   CreateUserArgs,
   ListUserArgs,
@@ -15,9 +14,22 @@ import {
   RevokeAllUserSessionArgs,
   ImpersonateUserArgs,
   RemoveUserArgs,
+  ListUserRequest,
+  CreateUserRequest,
+  SetUserRoleRequest,
+  SetUserPasswordRequest,
+  UpdateUserRequest,
+  BanUserRequest,
+  UnbanUserRequest,
+  ListUserSessionsRequest,
+  StopImpersonatingRequest,
+  RemoveUserRequest,
+  ImpersonateUserRequest,
+  RevokeAllUserSessionRequest,
+  RevokeUserSessionRequest,
 } from "../types/admin.types.js";
 
-const createUser = async (args: CreateUserArgs, req: Request) => {
+const createUser = async (args: CreateUserArgs, req: CreateUserRequest) => {
   return auth.api.createUser({
     body: {
       email: args.email,
@@ -31,7 +43,7 @@ const createUser = async (args: CreateUserArgs, req: Request) => {
 };
 
 // List Users
-const listUsers = async (args: ListUserArgs, req: Request) => {
+const listUsers = async (args: ListUserArgs, req: ListUserRequest) => {
   return auth.api.listUsers({
     query: {
       searchValue: args.searchValue,
@@ -51,7 +63,7 @@ const listUsers = async (args: ListUserArgs, req: Request) => {
 
 // Set User Role
 
-const setUserRole = async (args: SetUserRoleArgs, req: Request) => {
+const setUserRole = async (args: SetUserRoleArgs, req: SetUserRoleRequest) => {
   return auth.api.setRole({
     body: {
       userId: args.userId,
@@ -63,7 +75,7 @@ const setUserRole = async (args: SetUserRoleArgs, req: Request) => {
 
 // Set User Password
 
-const setUserPassword = async (args: SetUserPasswordArgs, req: Request) => {
+const setUserPassword = async (args: SetUserPasswordArgs, req: SetUserPasswordRequest) => {
   return auth.api.setUserPassword({
     body: {
       userId: args.userId,
@@ -74,7 +86,7 @@ const setUserPassword = async (args: SetUserPasswordArgs, req: Request) => {
 };
 
 // Update User
-const updateUser = async (args: UpdateUserArgs, req: Request) => {
+const updateUser = async (args: UpdateUserArgs, req: UpdateUserRequest) => {
   return auth.api.adminUpdateUser({
     body: {
       userId: args.userId,
@@ -85,7 +97,7 @@ const updateUser = async (args: UpdateUserArgs, req: Request) => {
 };
 
 // Ban User
-const banUser = async (args: BanUserArgs, req: Request) => {
+const banUser = async (args: BanUserArgs, req: BanUserRequest) => {
   return auth.api.banUser({
     body: {
       userId: args.userId,
@@ -98,7 +110,7 @@ const banUser = async (args: BanUserArgs, req: Request) => {
 
 // Unban User
 
-const unbanUser = async (args: UnbanUserArgs, req: Request) => {
+const unbanUser = async (args: UnbanUserArgs, req: UnbanUserRequest) => {
   return auth.api.unbanUser({
     body: {
       userId: args.userId,
@@ -108,7 +120,7 @@ const unbanUser = async (args: UnbanUserArgs, req: Request) => {
 };
 
 // List User Sessions
-const listUserSessions = async (args: ListUserSessionsArgs, req: Request) => {
+const listUserSessions = async (args: ListUserSessionsArgs, req: ListUserSessionsRequest) => {
   return auth.api.listUserSessions({
     body: {
       userId: args.userId,
@@ -118,7 +130,7 @@ const listUserSessions = async (args: ListUserSessionsArgs, req: Request) => {
 };
 
 // Revoke User Session
-const revokeUserSession = async (args: RevokeUserSessionArgs, req: Request) => {
+const revokeUserSession = async (args: RevokeUserSessionArgs, req: RevokeUserSessionRequest) => {
   return auth.api.revokeUserSession({
     body: {
       sessionToken: args.sessionToken,
@@ -128,7 +140,10 @@ const revokeUserSession = async (args: RevokeUserSessionArgs, req: Request) => {
 };
 
 // Revoke All Session for User
-const revokeAllUserSessions = async (args: RevokeAllUserSessionArgs, req: Request) => {
+const revokeAllUserSessions = async (
+  args: RevokeAllUserSessionArgs,
+  req: RevokeAllUserSessionRequest
+) => {
   return auth.api.revokeUserSessions({
     body: {
       userId: args.userId,
@@ -138,7 +153,7 @@ const revokeAllUserSessions = async (args: RevokeAllUserSessionArgs, req: Reques
 };
 
 // Impersonate User
-const impersonateUser = async (args: ImpersonateUserArgs, req: Request) => {
+const impersonateUser = async (args: ImpersonateUserArgs, req: ImpersonateUserRequest) => {
   return auth.api.impersonateUser({
     body: {
       userId: args.userId,
@@ -148,14 +163,14 @@ const impersonateUser = async (args: ImpersonateUserArgs, req: Request) => {
 };
 
 // Stop Impersonating User
-const stopImpersonatingUser = async (req: Request) => {
+const stopImpersonatingUser = async (req: StopImpersonatingRequest) => {
   return auth.api.stopImpersonating({
     headers: req.headers,
   });
 };
 
 // Remove User
-const removeUser = async (args: RemoveUserArgs, req: Request) => {
+const removeUser = async (args: RemoveUserArgs, req: RemoveUserRequest) => {
   return auth.api.removeUser({
     body: {
       userId: args.userId,
