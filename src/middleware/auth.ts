@@ -5,6 +5,7 @@ import httpStatus from "http-status";
 import auth from "../lib/auth.js";
 import ApiError from "../utils/ApiError.js";
 import catchAsync from "../utils/catchAsync.js";
+import { SessionWithImpersonatedBy, UserWithRole } from "better-auth/plugins";
 
 interface PermissionCheck {
   [resource: string]: string[];
@@ -25,8 +26,8 @@ const authMiddleware: (allowedRoles?: string[], permissions?: PermissionCheck) =
     }
 
     const { session, user } = result;
-    req.session = session;
-    req.user = user;
+    req.session = session as SessionWithImpersonatedBy;
+    req.user = user as UserWithRole;
 
     const isSuperAdmin = user.role === "superAdmin";
 

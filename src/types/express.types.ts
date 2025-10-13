@@ -1,11 +1,12 @@
-import type { Session, User } from "better-auth"; // or whatever your session type is
+import { User, Session } from "better-auth";
+import { SessionWithImpersonatedBy, UserWithRole } from "better-auth/plugins";
 
 declare global {
   /* eslint-disable @typescript-eslint/no-namespace */
   namespace Express {
     interface Request {
-      session?: Session; // or your custom shape
-      user?: User;
+      session?: Session & SessionWithImpersonatedBy;
+      user?: User & UserWithRole;
     }
   }
 }
