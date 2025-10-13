@@ -17,41 +17,38 @@ This is a production-ready TypeScript Express boilerplate with security, validat
 
 ## Dependencies
 
-| Category                   | Library / Utility                         | Purpose / Notes                                        |
-| -------------------------- | ----------------------------------------- | ------------------------------------------------------ |
-| **Core**                   | `express`                                 | Web framework                                          |
-| **ORM / Database**         | `prisma`                                  | Type-safe ORM and query builder                        |
-|                            | `@prisma/client`                          | Prisma runtime client                                  |
-| **Authentication**         | `better-auth`                             | Lightweight, extensible authentication system          |
-| **Security Middleware**    | `helmet`                                  | HTTP headers security                                  |
-|                            | `cors`                                    | Cross-Origin Resource Sharing                          |
-|                            | `hpp`                                     | HTTP parameter pollution protection                    |
-|                            | `express-rate-limit`                      | Rate limiting to prevent abuse                         |
-|                            | `xss-filters`                             | Sanitizes user input                                   |
-|                            | `compression`                             | Response compression middleware                        |
-| **Validation**             | `zod`                                     | Schema validation for request data                     |
-| **Error Handling**         | `http-status`                             | HTTP status code constants                             |
-| **Logging**                | `winston`                                 | General purpose logging library                        |
-|                            | `morgan`                                  | Logging for HTTP requests                              |
-| **Environment**            | `dotenv`                                  | Load `.env` configuration variables                    |
-|                            | `dotenv-cli`                              | CLI for loading env files                              |
-| **Process Management**     | `pm2`                                     | Optional process manager for production                |
-| **Dev Tools / TypeScript** | `typescript`                              | TypeScript compiler                                    |
-|                            | `tsup`                                    | Fast TypeScript bundler for Node.js                    |
-|                            | `nodemon`                                 | Hot-reload dev server                                  |
-|                            | `typescript-eslint`                       | TypeScript ESLint parser and rules                     |
-| **Linting / Formatting**   | `eslint`                                  | Code linting                                           |
-|                            | `@eslint/js`                              | ESLint JS parser plugin                                |
-|                            | `globals`                                 | Global identifiers for ESLint                          |
-|                            | `eslint-config-prettier`                  | Disable ESLint rules that conflict with Prettier       |
-|                            | `eslint-plugin-prettier`                  | Run Prettier as an ESLint rule                         |
-|                            | `prettier`                                | Code formatting                                        |
-| **Git Hooks / Automation** | `husky`                                   | Git hooks (e.g., pre-commit)                           |
-|                            | `lint-staged`                             | Run lint/format only on staged files                   |
-| **Utilities**              | `rimraf`                                  | Remove directories/files (used in `build` script)      |
-| **Custom Utils**           | `catchAsync` (`/src/utils/catchAsync.ts`) | Wrapper to handle async route errors without try/catch |
-|                            | `xss-clean` (`/src/middleware/xss-clean`) | Recursive sanitizer for request input                  |
-|                            | `ApiError` (`/src/utils/ApiError.ts`)     | Custom Error class for standardized API errors         |
+| Category                   | Library / Utility                     | Purpose / Notes                                     |
+| -------------------------- | ------------------------------------- | --------------------------------------------------- |
+| **Core**                   | `express`                             | Web framework                                       |
+| **ORM / Database**         | `prisma`                              | Type-safe ORM and query builder                     |
+|                            | `@prisma/client`                      | Prisma runtime client                               |
+| **Authentication**         | `better-auth`                         | Lightweight, extensible authentication, RBAC system |
+| **Security Middleware**    | `helmet`                              | HTTP headers security                               |
+|                            | `cors`                                | Cross-Origin Resource Sharing                       |
+|                            | `hpp`                                 | HTTP parameter pollution protection                 |
+|                            | `express-rate-limit`                  | Rate limiting to prevent abuse                      |
+|                            | `xss-filters`                         | Sanitizes user input                                |
+|                            | `compression`                         | Response compression middleware                     |
+| **Validation**             | `zod`                                 | Schema validation for request data                  |
+| **Error Handling**         | `ApiError` (`/src/utils/ApiError.ts`) | Custom Error class for standardized API errors      |
+|                            | `/src/middleware/error.ts`            | Custom middlewares for error conversion/handling    |
+| **Logging**                | `winston`                             | General purpose logging library                     |
+|                            | `morgan`                              | Logging for HTTP requests                           |
+| **Environment**            | `dotenv`                              | Load `.env` configuration variables                 |
+|                            | `dotenv-cli`                          | CLI for loading env files                           |
+| **Process Management**     | `pm2`                                 | Optional process manager for production             |
+| **Dev Tools / TypeScript** | `typescript`                          | TypeScript compiler                                 |
+|                            | `tsup`                                | Fast TypeScript bundler for Node.js                 |
+|                            | `nodemon`                             | Hot-reload dev server                               |
+|                            | `typescript-eslint`                   | TypeScript ESLint parser and rules                  |
+| **Linting / Formatting**   | `eslint`                              | Code linting                                        |
+|                            | `@eslint/js`                          | ESLint JS parser plugin                             |
+|                            | `globals`                             | Global identifiers for ESLint                       |
+|                            | `eslint-config-prettier`              | Disable ESLint rules that conflict with Prettier    |
+|                            | `eslint-plugin-prettier`              | Run Prettier as an ESLint rule                      |
+|                            | `prettier`                            | Code formatting                                     |
+| **Git Hooks / Automation** | `husky`                               | Git hooks (e.g., pre-commit)                        |
+|                            | `lint-staged`                         | Run lint/format only on staged files                |
 
 ## Structure
 
@@ -59,12 +56,11 @@ This is a production-ready TypeScript Express boilerplate with security, validat
 src/
 ├── app.ts              # Express app initialization
 ├── server.ts           # Server entry point
-├── config/             # Environment variables, logging, and request logging setup
-├── controllers/        # Business logic — orchestrate request handling logic
-├── db/                 # Database files
-├── lib/                # Shared libraries
+├── config/             # Environment variables, winston/morgan logging setup
+├── controllers/        # Orchestrate request handling logic
+├── lib/                # Shared libraries (Auth / Permissions / Primsa setup / ect.)
 ├── middleware/         # Custom middleware
-├── models/             # Domain models/ORM schema extensions
+├── models/             # Domain models/ORM schema type extensions
 ├── routes/             # Express route definitions
 ├── services/           # Services
 ├── types/              # TypeScript type definitions and declarations
@@ -77,18 +73,24 @@ src/
 ```json
 {
   "scripts": {
-    "build": "rimraf dist && tsup && cp -r src/db/generated dist/db/generated",
-    "pretty": "prettier ./src --write",
-    "pretty:check": "prettier ./src --check",
-    "lint": "eslint . --fix",
-    "lint:check": "eslint .",
-    "start": "NODE_ENV=production node dist/server.cjs",
+    "build": "rimraf dist && tsup",
+    "pretty": "npx prettier ./src --write",
+    "pretty:check": "npx prettier ./src --check",
+    "lint": "npx eslint . --fix",
+    "lint:check": "npx eslint .",
+    "seed:dev": "NODE_ENV=development tsx ./scripts/seed.ts",
+    "start": "NODE_ENV=production node dist/server.js",
     "start:dev": "NODE_ENV=development nodemon --watch src --ext ts --exec tsx src/server.ts",
-    "start:pm2": "NODE_ENV=production pm2 start dist/server.cjs --name express-backend",
+    "start:pm2": "NODE_ENV=production pm2 start dist/server.js --name express-backend",
     "restart:pm2": "NODE_ENV=production pm2 restart express-backend",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:migrate:deploy": "prisma migrate deploy",
+    "auth:generate": "NODE_ENV=development npx @better-auth/cli generate --config src/lib/auth.ts",
+    "prisma:generate": "pnpm prisma:generate:dev",
+    "prisma:generate:dev": "dotenv -e .env.development -- prisma generate",
+    "prisma:generate:prod": "dotenv -e .env.production -- prisma generate",
+    "prisma:migrate": "pnpm prisma:migrate:dev",
+    "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
+    "prisma:migrate:prod": "dotenv -e .env.production -- prisma migrate dev",
+    "prisma:migrate:deploy": "dotenv -e .env.$NODE_ENV -- prisma migrate deploy",
     "prisma:studio": "prisma studio",
     "prisma:push": "prisma db push",
     "docker:dev": "docker compose up -d",
