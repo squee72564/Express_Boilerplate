@@ -2,7 +2,7 @@ import type { NextFunction, Response } from "express";
 import httpStatus from "http-status";
 
 import catchAsync from "../utils/catchAsync.js";
-import { adminService } from "../services/index.js";
+import { adminService, userService } from "../services/index.js";
 
 import {
   BanUserRequest,
@@ -19,6 +19,7 @@ import {
   UnbanUserRequest,
   UpdateUserRequest,
 } from "../types/admin.types.js";
+import ApiError from "@/utils/ApiError.ts";
 
 const createUser = catchAsync(
   async (req: CreateUserRequest, res: Response, _next: NextFunction) => {
@@ -30,7 +31,7 @@ const createUser = catchAsync(
 );
 
 const listUsers = catchAsync(async (req: ListUserRequest, res: Response) => {
-  const args = { ...req.body };
+  const args = { ...req.query };
 
   const users = await adminService.listUsers(args, req);
   res.status(httpStatus.OK).json(users);
@@ -39,8 +40,18 @@ const listUsers = catchAsync(async (req: ListUserRequest, res: Response) => {
 const setUserRole = catchAsync(async (req: SetUserRoleRequest, res: Response) => {
   const args = { ...req.body, ...req.params };
 
-  const user = await adminService.setUserRole(args, req);
-  res.status(httpStatus.OK).json(user);
+  const user = await userService.getPublicUserById(args.userId);
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User is not found.");
+  }
+
+  if (req.user?.role === "admin" && user.role === "superAdmin") {
+    throw new ApiError(httpStatus.FORBIDDEN, "Forbidden: insufficient role");
+  }
+
+  const updatedUser = await adminService.setUserRole(args, req);
+  res.status(httpStatus.OK).json(updatedUser);
 });
 
 const setUserPassword = catchAsync(async (req: SetUserPasswordRequest, res: Response) => {
