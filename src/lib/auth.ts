@@ -24,8 +24,7 @@ const auth = betterAuth({
   // https://www.better-auth.com/docs/reference/options#emailandpassword
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true,
-    autoSignIn: true,
+    requireEmailVerification: env.NODE_ENV === "production",
     sendResetPassword: async (data: { user: User; url: string; token: string }, req?: Request) => {
       // Send reset password email
       if (env.NODE_ENV === "development") {
@@ -59,7 +58,7 @@ const auth = betterAuth({
         logger.debug(`Better Auth Verify Email Callback:`, { data: data });
       }
     },
-    sendOnSignUp: true,
+    sendOnSignUp: env.NODE_ENV === "production",
     autoSignInAfterVerification: true,
     expiresIn: 3600, // 1 hour
   },
@@ -73,6 +72,8 @@ const auth = betterAuth({
         user,
         superAdmin,
       },
+      defaultRole: "user",
+      adminRoles: ["admin", "superAdmin"],
     }),
   ],
 
