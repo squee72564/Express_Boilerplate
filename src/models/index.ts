@@ -13,7 +13,15 @@ import {
 
 type PublicUser = Omit<
   User,
-  "email" | "emailVerified" | "role" | "banned" | "banReason" | "banExpires" | "updatedAt"
+  "email" | "emailVerified" | "banned" | "banReason" | "banExpires" | "updatedAt"
 >;
+
+export const PublicUserSelect = {
+  id: true,
+  name: true,
+  image: true,
+  createdAt: true,
+  role: true,
+} as const;
 
 export type { PublicUser, User, Session, Account, Verification };
