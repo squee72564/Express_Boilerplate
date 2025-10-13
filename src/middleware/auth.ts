@@ -1,6 +1,4 @@
 import type { NextFunction, Request, RequestHandler, Response } from "express";
-import "../types/express.types.js"; // Augment Express types and explicitly import so tsup includes it
-
 import { fromNodeHeaders } from "better-auth/node";
 import httpStatus from "http-status";
 
@@ -30,14 +28,9 @@ const authMiddleware: (allowedRoles?: string[], permissions?: PermissionCheck) =
     req.session = session;
     req.user = user;
 
-    const isAdmin = user.role === "admin";
     const isSuperAdmin = user.role === "superAdmin";
 
     if (isSuperAdmin) {
-      return next();
-    }
-
-    if (allowedRoles && !allowedRoles.includes("superAdmin") && isAdmin) {
       return next();
     }
 
